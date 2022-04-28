@@ -1,0 +1,2 @@
+dsdk[psycopg2,pymssql]@git+https://github.com/pennsignals/dsdk.git@1.5.6#egg=dsdk
+jupyterlab_skip_traceback

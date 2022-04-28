@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+
+  predict:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: predict
+
+  predict.test:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: predict.test

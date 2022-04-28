@@ -1,0 +1,261 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 2,
+  "iteration": 1635883710604,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "repeat": "panel",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  *\nfrom\n  ${panel:raw}(\n    '{${microservice:csv}}'::varchar[],\n    '{${model:csv}}'::varchar[],\n    $__timeFrom()::timestamptz,\n    $__timeTo()::timestamptz\n  )",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "${panel:raw}",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 31,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": null,
+        "definition": "select\n    r.specific_schema\nfrom\n    information_schema.routines as r\nwhere\n    routine_name = 'drift_panels'\n    and not exists (\n        select\n            1\n        from\n            information_schema.parameters as p\n        where\n            p.specific_catalog = r.specific_catalog\n            and p.specific_schema = r.specific_schema\n            and p.specific_name = r.routine_name\n        )",
+        "description": "schema",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "schema",
+        "multi": true,
+        "name": "schema",
+        "options": [],
+        "query": "select\n    r.specific_schema\nfrom\n    information_schema.routines as r\nwhere\n    routine_name = 'drift_panels'\n    and not exists (\n        select\n            1\n        from\n            information_schema.parameters as p\n        where\n            p.specific_catalog = r.specific_catalog\n            and p.specific_schema = r.specific_schema\n            and p.specific_name = r.routine_name\n        )",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": null,
+        "definition": "select\n    name\nfrom\n    ${schema:raw}.drift_panels()",
+        "description": "panel",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "panel",
+        "multi": true,
+        "name": "panel",
+        "options": [],
+        "query": "select\n    name\nfrom\n    ${schema:raw}.drift_panels()",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": null,
+        "definition": "select\n  version\nfrom\n  ${schema:raw}.microservices\norder by\n  version",
+        "description": "microservice",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "microservice",
+        "multi": true,
+        "name": "microservice",
+        "options": [],
+        "query": "select\n  version\nfrom\n  ${schema:raw}.microservices\norder by\n  version",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": null,
+        "definition": "select\n  version\nfrom\n  ${schema:raw}.models\norder by\n  version",
+        "description": "model",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "model",
+        "multi": true,
+        "name": "model",
+        "options": [],
+        "query": "select\n  version\nfrom\n  ${schema:raw}.models\norder by\n  version",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Data Drift",
+  "uid": "HDlWN-Knz",
+  "version": 6
+}

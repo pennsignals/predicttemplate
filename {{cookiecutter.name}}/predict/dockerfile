@@ -1,0 +1,49 @@
+ARG IFLAGS="--quiet --no-cache-dir --user"
+
+FROM python:3.9.9-slim-bullseye as build
+ARG IFLAGS
+ARG TINI_VERSION=v0.19.0
+WORKDIR /tmp
+ENV PATH /root/.local/bin:$PATH
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+COPY . .
+COPY freetds.conf /etc/freetds/
+COPY license.txt .
+RUN \
+    chmod +x /usr/bin/tini && \
+    apt-get -qq update --fix-missing && \
+    apt-get -qq install --no-install-recommends git > /dev/null && \
+    pip install -U pip setuptools wheel && \
+    pip install ${IFLAGS} "." && \
+    apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM python:3.9.9-slim-bullseye as predict
+LABEL name="predict"
+WORKDIR /tmp
+ENV PATH /root/.local/bin:$PATH
+COPY --from=build /etc/freetds/freetds.conf /etc/freetds/
+COPY --from=build /root/.local /root/.local
+COPY --from=build /tmp/predict/sql /tmp/predict/sql
+COPY --from=build /usr/bin/tini /usr/bin
+RUN \
+    ln -s /local ./predict/local && \
+    ln -s /secrets ./predict/secrets && \
+    ln -s /model ./predict/model && \
+    ln -s /gold ./predict/gold
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD ["predict"]
+
+FROM build as predict.test
+ARG IFLAGS
+LABEL name="predict.test"
+WORKDIR /tmp
+RUN \
+    pip install ${IFLAGS} ".[all]" && \
+    ln -s /local ./predict/local && \
+    ln -s /secrets ./predict/secrets && \
+    ln -s /model ./predict/model && \
+    ln -s /gold ./predict/gold
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "pre-commit", "run", "--all-files" ]

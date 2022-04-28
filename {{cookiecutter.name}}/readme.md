@@ -1,0 +1,183 @@
+# Template for Python Prediction Microservice Projects
+
+[![Release](https://github.com/pennsignals/template/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/template/actions/workflows/release.yml)
+
+[![Test](https://github.com/pennsignals/template/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/template/actions/workflows/test.yml)
+
+## Prerequisites
+
+1. Use bash / ksh linux command line
+2. Use git version control from the command line
+3. Use docker and docker-compose from the command line
+4. Use jupyterlab
+5. Use modern python >= 3.9 and python modules for Data Science / ML
+6. Use setup.py and anaconda's environment.yaml to manage trained model dependencies along with isolated python virtual environments
+7. Requirement for drift monitoring
+8. Requirement for feature / evidence / prediction storage / procenance / tracability in operations
+9. Requirement to manage secrets across environments and keep them out of version control
+10. Requirement manage configuration across environments
+11. Possible requirement to publish predictions into the Electornic Medical Record System
+12. Intent to deploy a containerized microservice by buildng a python module that uses a trained model or heuristic asset
+
+## Getting Started
+
+Create your python project from this template by forking the project to your own git repository. Chose a new repository name that is:
+
+1. Short but does not abbreviate words
+3. All lower case
+4. No hyphens
+5. No underscores
+
+The new repository name shall match the python module name, and the postgres schema name.
+
+Update the github workflow badges and badge urls for release and test workflows above to point at the new repository.
+
+The git remote "origin" shall point at the new project repository. The git remote "upstream" shall point at the original template repository. See `.git/config`:
+
+```
+...
+[remote "origin"]
+	url = git@github.com:pennsignals/newrepository.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[remote "upstream"]
+	url = git@github.com:pennsignals/template.git
+	fetch = +refs/heads/*:refs/remotes/upstream/*
+...
+```
+
+Update the module name from 'example' in:
+
+    pyproject.toml
+    setup.py
+    setup.cfg
+    ./predict/src/newrepository/
+    ./predict/test/*.py
+
+Update the schema name from 'example' in:
+
+    ./postgres/sql/initdb.d/*.sql
+    ./postgres/sql/patchdb.d/*.sql
+    ./predict/local/*.yaml
+
+## Workflow
+
+Use the jupyterlab container `docker compose up --build jupyterlab` for your data science exploration and development. Submit feature requests and bugs as issues against the upstream template repository.
+
+Use the postgres container `docker compose up --build postgres` for testing schema creation, and for your local feature, evidence, and prediction storage.
+
+Use the pgadmin container `docker compose up --build pgadmin`, psql command line, or a database client like dbeaver of datagrip to interact with the containerized postgres database directly.
+
+Use the grafana container `docker compose up --build grafana` to see drift monitoring and debug postgres functions for drift monitoring and generation of synthetic data.
+
+Before model training, schedule a review of the queries and feature vectors:
+
+1. Use `snake_case` for column names, feature names, and table names. Avoid any assumptions about downstream system case sensitivity of metadata, `snake_case` is safest.
+2. Use &lg; `as_of` datetime in all queries. Avoid "cheating on the test" during model training by reading future data that will not be available in real time operations. Allow different versions of the model to be compared on historical data sets by making the queries deterministic as possible using `as_of`.
+3. Use the canonical `closed-open` form for all intervals: e.g. `interval_begin` &lte; `admitted_datetime` &lt; `interval_end` to eliminate one-off errors and reprocessing/duplication of data that should be in disjoint data sets. The `closed open` form is read as, "from interval_begin inclusive up to but not including interval_end". Do NOT use `between` in sql queries which includes both the begin AND the end of the the interval.
+4. The `as_of` datetime is typically also the `interval_end`.
+
+After model training, complete the python module using git, precommit, and tests.
+
+Schedule a review of the python code, lint ignores in the code and lint ignores in pyproject.toml.
+
+Run predict `docker compose up --build predict` to run and debug the pipline.
+
+Create a gold file of predictions with as_of and check it into version control `docker compose up create-gold`.
+
+Updates to the python module and sql code shall verify that the gold file has not changed using gold file validation `docker compose up validate gold`.
+
+## Secrets / Env files
+
+Do not check secrets into version control. Keep secrets in ./secrets/, ./predict/secrets/ directories that are protected by .gitignore rules.
+
+Files:
+
+    example.env     # in version control (DO NOT PUT REAL SECRETS HERE)
+    docker.env      # use with local python venv or docker (NOT IN VERSION CONTROL)
+
+Create a file for your development / docker secrets and update it:
+
+    cp ./predict/secrets/example.env ./predict/secrets/docker.env
+
+## Configuration
+
+A single configuration is used across staging and production since env variables hide the variance in configuration. Update the model paths.
+
+Files:
+
+    configuration.yaml # in version control (PUSHED DURING DEPLOYMENT)
+    docker.yaml        # in version control identical to configuration.yaml except with an as_of datetime for gold file creation
+    test.yaml          # in version control used with pytest
+
+## Virtual Environment:
+
+    python3.9 -m venv .venv
+    . .venv/bin/activate
+
+Install:
+
+    pip install ".[all]"
+
+--or--
+
+Install in development mode for faster breaktest/fix: no reinstallation needed after changes, but this mode will not check for a broken module installer:
+
+    pip install -e ".[all]"
+
+Install pre-commit:
+
+    pre-commit install
+
+Run pre-commit directly without commiting:
+
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+
+Black and some file format fixers run during pre-commit. All are fairly safe. A failed commit due to reformatting WILL require you to simply re-add the files modified and commit.
+
+Specifically, black modifies code ONLY in a way that ensures that the code's meaning (parse tree) hasn't changed, so it is very safe.
+
+The linters like pylint and flake8 that run during pre-commitand likely indicate real problems with the code.
+
+The tests that run with pytest that run during pre-commit indicate real problems with the code.
+
+Run commit:
+
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
+
+Deactivate venv:
+
+    deactivate
+
+Rebuild the postgres container and remove the docker volume if the database schema is changed.
+
+    docker system prune
+    docker volume prune
+
+## CI/CD Lint & Test:
+
+Runs pre-commit inside an isolated container. This is also what runs remotely in CI / CD:
+
+    docker-compose up --build test &
+    ...
+    docker-compose down
+
+## Validation
+
+Pull, reinstall, and validate gold:
+
+    git pull
+    pip install .[all]
+
+Uses as_of from the docker.yaml configuration file and overwrites the gold file.
+
+    create-gold -c ./predict/local/docker.yaml -e ./predict/secrets/docker.env
+
+Uses as_of EMBEDED IN THE GOLD FILE from docker.yaml, not the as_of in the docker.yaml
+
+    validate-gold -c ./predict/local/docker.yaml -e ./predict/secrets/docker.env
+
+## Deploy Configuration
+
+Deploy configuration will be found and used with partial automation speficied in `local/deploy_config.yml` to push service configuration to consul, and schedule templated nomad jobs.
+
+CI / CD automation is incomplete for secrets, and postgres schema migration.

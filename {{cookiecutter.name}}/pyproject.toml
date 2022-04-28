@@ -1,0 +1,83 @@
+[build-system]
+requires = [
+    "pip>=22.0.4",
+    "pytest-runner>=6.0.0",
+    "setuptools>=61.2.0",
+    "setuptools_scm[toml]>=6.4.2",
+    "wheel>=0.37.1",
+]
+
+[project]
+authors = [
+    { name = "Jason Lubken", email = "jlubken@users.noreply.github.com" },
+    { name = "Michael Becker", email = "mdbecker@users.noreply.github.com" },
+    { name = "Corey Chivers", email = "cjbayesian@user.noreply.github.com" },
+    { name = "Penn Signals", email = "pennsignals@pennmedicine.upenn.edu" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
+]
+description = "{{cookiecutter.description}}"
+dynamic = ["dependencies", "optional-dependencies", "version"]
+license = { file = "license.txt" }
+name = "{{cookiecutter.name}}"
+requires-python = ">=3.7.4"
+readme = "readme.md"
+
+[project.urls]
+Homepage = "https://github.com/pennsignals/{{cookiecutter.repo}}"
+Source = "https://github.com/pennsignals/{{cookiecutter.repo}}"
+Tracker = "https://github.com/pennsignals/{{cookiecutter.repo}}/issues"
+
+[tool.black]
+line-length = 79
+target-version = ["py39"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "raise NotImplementedError()",
+    "pragma: nocover",
+    "if __name__ == .__main__.:",
+]
+precision = 2
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+parallel = true
+
+[tool.pylint.basic]
+good-names = '''at,df,i,logger'''
+
+[tool.pylint.master]
+ignore = '''docs'''
+
+[tool.pylint.message_control]
+disable = '''duplicate-code,C0330'''
+
+[tool.pylint.miscellaneous]
+notes = '''FIXME,XXX'''
+
+[tool.pylint.similarities]
+min-similarity-lines = 4
+ignore-comments = "yes"
+ignore-docstrings = "yes"
+ignore-imports = "yes"
+
+[tool.pytest.ini_options]
+addopts = "-ra --cov={{cookiecutter.name}} --cov-report term-missing --strict --ignore=.eggs --tb=short"
+testpaths = ["predict/test"]
+norecursedirs = ".env .git build dist"
+python_files = "test.py tests.py test_*.py *_test.py"
+
+[tool.setuptools_scm]
+local_scheme = "dirty-tag"

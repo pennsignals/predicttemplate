@@ -1,0 +1,15 @@
+!{{cookiecutter.name}}
+as_of: 2019-09-18 17:19:23.873398+00
+gold: ./predict/gold/gold.pkl
+model: ./predict/model/{{cookiecutter.name}}.pkl
+postgres: !postgres
+  database: ${POSTGRES_DATABASE}
+  host: ${POSTGRES_HOST}
+  password: ${POSTGRES_PASSWORD}
+  port: ${POSTGRES_PORT}
+  schema: cdisepsis
+  sql: !asset
+    path: ./predict/sql/postgres
+    ext: .sql
+  username: ${POSTGRES_USERNAME}
+time_zone: America/New_York

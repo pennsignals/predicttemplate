@@ -1,0 +1,50 @@
+channels:
+    - conda-forge
+# NOTICE:
+#   setup.py is authoritative for production use.
+#   Synchronize critical common production dependency versions
+#   between this file and setup.py
+dependencies:
+    - python=3.9
+    - altair
+    - altair_viewer
+    - black
+    - diff-match-patch
+    - freetds
+    - hdf5
+    - hdf5plugin
+    - h5py
+    - ipykernel
+    - isort
+    - jupyter_conda
+    - jupyter_server
+    - jupyterlab
+    - jupyterlab_code_formatter
+    - jupyterlab-drawio
+    - jupyterlab_execute_time
+    - jupyterlab-git
+    - jupyterlab-latex
+    - jupyterlab-pullrequests
+    - libpq
+    - lz4
+    - matplotlib
+    - nb_conda_kernels
+    - numpy
+    - numexpr
+    - nodejs
+    - pandas
+    - pip>=22.0.4
+    - psycopg2
+    - pymongo
+    - pymssql
+    - pyyaml
+    - pyzmq
+    - retrolab
+    - scipy
+    - scikit-learn
+    - seaborn
+    - pytables
+    - tornado
+    - vega
+    - vega_datasets
+    - wheel

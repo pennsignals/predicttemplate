@@ -1,0 +1,100 @@
+FROM debian:bullseye-slim as miniconda3
+WORKDIR /root
+ARG TINI_VERSION=v0.19.0
+ARG ANACONDA_VERSION=4.9.2
+ARG PYTHON_VERSION=py39
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH /opt/conda/bin:$PATH
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN \
+    chmod +x /usr/bin/tini && \
+    apt-get -qq update --fix-missing && \
+    # /dev/null quieten dpkg invoked by apt-get install
+    # essential binaries
+    apt-get -qq install --no-install-recommends > /dev/null \
+        bzip2 \
+        ca-certificates \
+        curl \
+        file \
+        git \
+        iptables \
+        net-tools \
+        wget \
+    && \
+    apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
+    rm -rf /var/lib/apt/lists/* && \
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-${PYTHON_VERSION}_${ANACONDA_VERSION}-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    /opt/conda/bin/conda update -c defaults conda && \
+    /opt/conda/bin/conda clean -tipsy && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc && \
+    echo "conda activate" >> ~/.bashrc
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "/bin/bash" ]
+
+FROM miniconda3 as binaries
+WORKDIR /tmp
+ARG YQ_VERSION=v4.13.2
+ARG JQ_VERSION=jq-1.6
+ADD https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 /usr/bin/yq
+ADD https://github.com/stedolan/jq/releases/download/${JQ_VERSION}/jq-linux64 /usr/bin/jq
+# COPY jupyterlab/linux_f5cli.x86_64.deb .
+COPY jupyterlab/bashrc .
+RUN \
+    # echo '#!/bin/bash\nf5fpc -x -s -t $(yq e ".host" $1) -u $(yq e ".user" $1) -p $(yq e ".password" $1)' > /usr/local/bin/up && \
+    # echo '#!/bin/bash\nf5fpc -i' > /usr/local/bin/info && \
+    # echo '#!/bin/bash\nf5fpc -o' > /usr/local/bin/down && \
+    chmod +x /usr/bin/jq && \
+    chmod +x /usr/bin/yq && \
+    # chmod +x /usr/local/bin/up && \
+    # chmod +x /usr/local/bin/info && \
+    # chmod +x /usr/local/bin/down && \
+    # dpkg -i linux_f5cli.x86_64.deb && \
+    # rm linux_f5cli.x86_64.deb && \
+    cat bashrc >> ~/.bashrc && \
+    rm bashrc && \
+    # non-essential, for network diagnostics
+    apt-get -qq update --fix-missing && \
+    apt-get -qq install --no-install-recommends > /dev/null \
+        dnsutils \
+        iproute2 \
+        net-tools \
+        ppp \
+        procps \
+        vim \
+    && \
+    apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM binaries as venv
+WORKDIR /root
+ENV PATH /root/.venv/bin:$PATH
+ENV FREETDS /etc/freetds
+COPY freetds.conf /etc/freetds/
+COPY jupyterlab/environment.yml .
+RUN \
+    /opt/conda/bin/conda env create --prefix ~/.venv --file ~/environment.yml && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc && \
+    echo "conda activate ~/.venv" >> ~/.bashrc && \
+    . ~/.bashrc && \
+    mkdir -p /root/.jupyter && \
+    echo "c.ServerApp.token = ''" > /root/.jupyter/jupyter_notebook_config.py && \
+    mkdir -p /root/.jupyter/custom && \
+    echo -e ".container { width:99% !important; }\nelement.style { max-width: 99% !important; }" > /root/.jupyter/custom/custom.css && \
+    mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
+    echo '{ "theme": "JupyterLab Dark" }' > /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+WORKDIR /tmp
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "jupyter", "retro", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--notebook-dir", "/tmp" ]
+
+FROM venv as jupyterlab
+LABEL name="jupyterlab"
+WORKDIR /root
+COPY requirements.txt .
+RUN \
+    pip install -r requirements.txt
+WORKDIR /tmp
