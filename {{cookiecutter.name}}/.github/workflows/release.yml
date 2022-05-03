@@ -114,5 +114,4 @@ jobs:
       with:
         files: nomad.tar.gz
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-{% endraw %}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}

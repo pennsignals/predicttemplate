@@ -19,5 +19,4 @@ jobs:
         # login in case there are any images as dependencies
         docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
 
-        docker-compose run predict.test
-{% endraw %}
+        docker-compose run predict.test{% endraw %}

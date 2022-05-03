@@ -67,5 +67,4 @@ EOH
       }
     }
   }
-}
-{% endraw %}
+}{% endraw %}
