@@ -15,6 +15,15 @@ or the equivalent for your environment.
 
 ### Creating a new project
 
+The project name must be a valid postgres schema name, python module name, and nomad task name.
+
+Choose a project / repo name:
+
+1. Short but does not abbreviate words
+3. All lower case
+4. No hyphens
+5. No underscores
+
 Once cruft is installed you can run the following to create your new project:
 
 ```sh
@@ -30,7 +39,7 @@ git init
 git add -A
 git commit -m "first commit"
 git branch -M main
-git remote add origin git@github.com:pennsignals/{your-repo-name}.git
+git remote add origin git@github.com:pennsignals/{name}.git
 git push -u origin main
 ```
 
@@ -55,4 +64,3 @@ For further instructions on how to use your project can be found in the `readme.
 * Add `cruft check` to CICD in `{{cookiecutter.name}}/.github/workflows`. Maybe as part of test.yml? Maybe it's own thing?
 * Add `.github/test.yml` to root of this repo and have it run `cookiecutter .` to ensure that the template isn't broken when updates are made.
 * Update `{{cookiecutter.name}}/readme.md` with instructions on how to use `cruft update`.
-* Remove reference to template from `{{cookiecutter.name}}/readme.md` and fix badge urls to use cookiecutter `repo` variable.

@@ -1,5 +1,6 @@
 set search_path = {{cookiecutter.name}};
 
+
 create or replace function up_drift()
 returns void as
 $$
@@ -249,5 +250,6 @@ end;
 $$
     language plpgsql
     set search_path = {{cookiecutter.name}};
+
 
 select up_drift();

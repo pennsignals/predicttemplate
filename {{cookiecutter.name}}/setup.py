@@ -24,6 +24,7 @@ TEST_REQUIRES = (
     "astroid",
     "black",
     "coverage[toml]",
+    "cruft",
     "flake8",
     "flake8-bugbear",
     "flake8-commas",

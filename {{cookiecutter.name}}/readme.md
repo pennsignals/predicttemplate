@@ -1,8 +1,8 @@
 # Template for Python Prediction Microservice Projects
 
-[![Release](https://github.com/pennsignals/template/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/template/actions/workflows/release.yml)
+[![Release](https://github.com/pennsignals/{name}/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/{name}/actions/workflows/release.yml)
 
-[![Test](https://github.com/pennsignals/template/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/template/actions/workflows/test.yml)
+[![Test](https://github.com/pennsignals/{name}/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/{name}/actions/workflows/test.yml)
 
 ## Prerequisites
 
@@ -18,46 +18,6 @@
 10. Requirement manage configuration across environments
 11. Possible requirement to publish predictions into the Electornic Medical Record System
 12. Intent to deploy a containerized microservice by buildng a python module that uses a trained model or heuristic asset
-
-## Getting Started
-
-Create your python project from this template by forking the project to your own git repository. Chose a new repository name that is:
-
-1. Short but does not abbreviate words
-3. All lower case
-4. No hyphens
-5. No underscores
-
-The new repository name shall match the python module name, and the postgres schema name.
-
-Update the github workflow badges and badge urls for release and test workflows above to point at the new repository.
-
-The git remote "origin" shall point at the new project repository. The git remote "upstream" shall point at the original template repository. See `.git/config`:
-
-```
-...
-[remote "origin"]
-	url = git@github.com:pennsignals/newrepository.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
-[remote "upstream"]
-	url = git@github.com:pennsignals/template.git
-	fetch = +refs/heads/*:refs/remotes/upstream/*
-...
-```
-
-Update the module name from 'example' in:
-
-    pyproject.toml
-    setup.py
-    setup.cfg
-    ./predict/src/newrepository/
-    ./predict/test/*.py
-
-Update the schema name from 'example' in:
-
-    ./postgres/sql/initdb.d/*.sql
-    ./postgres/sql/patchdb.d/*.sql
-    ./predict/local/*.yaml
 
 ## Workflow
 
