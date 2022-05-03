@@ -62,5 +62,5 @@ For further instructions on how to use your project can be found in the `readme.
 
 # TODO
 * Add `cruft check` to CICD in `{{cookiecutter.name}}/.github/workflows`. Maybe as part of test.yml? Maybe it's own thing?
-* Add `.github/test.yml` to root of this repo and have it run `cookiecutter .` to ensure that the template isn't broken when updates are made.
+* Add `.github/test.yml` to root of this repo and have it run `cookiecutter .` to ensure that the template isn't broken when updates are made. See [#3](https://github.com/pennsignals/dsdk_cookie/issues/3)
 * Update `{{cookiecutter.name}}/readme.md` with instructions on how to use `cruft update`.
