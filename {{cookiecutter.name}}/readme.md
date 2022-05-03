@@ -1,8 +1,8 @@
 # Template for Python Prediction Microservice Projects
 
-[![Release](https://github.com/pennsignals/{name}/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/{name}/actions/workflows/release.yml)
+[![Release](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml)
 
-[![Test](https://github.com/pennsignals/{name}/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/{name}/actions/workflows/test.yml)
+[![Test](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/test.yml)
 
 ## Prerequisites
 
