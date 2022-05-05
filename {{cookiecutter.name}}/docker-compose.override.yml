@@ -50,8 +50,6 @@ services:
     extra_hosts:  # for containerized f5 conflict with docker management of container's /etc/hosts
     - "dns1:170.212.249.133"  # use with nslookup
     - "dns2:170.212.24.5"  # use with nslookup
-    # - "claritydev.uphs.upenn.edu:170.166.22.40"
-    # - "clarityprod.uphs.upenn.edu:170.166.35.193"
     ports: # host port: container port
     - "8888:8888" # jupyterlab
     # - "44444:44444" # containerized f5

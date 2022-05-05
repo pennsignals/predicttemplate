@@ -15,7 +15,7 @@ services:
     environment:
       <<: *hashicorp-config
       DEPLOY: "FALSE"
-    image: docker.pkg.github.com/pennsignals/deploy_action/deploy_action.deploy:0.1.3
+    image: ghcr.io/pennsignals/deploy_action/deploy_action.deploy:0.1.3
     volumes:
     - ./:/source
     working_dir: /source
@@ -24,7 +24,7 @@ services:
   deploy:
     environment:
       <<: *hashicorp-config
-    image: docker.pkg.github.com/pennsignals/deploy_action/deploy_action.deploy:0.1.3
+    image: ghcr.io/pennsignals/deploy_action/deploy_action.deploy:0.1.3
     volumes:
     - ./:/source
     working_dir: /source
@@ -33,7 +33,7 @@ services:
   config:
     environment:
       <<: *hashicorp-config
-    image: docker.pkg.github.com/pennsignals/consul_configs_submit_action/consul_configs_submit_action.consul:v1.0.0
+    image: ghcr.io/pennsignals/consul_configs_submit_action/consul_configs_submit_action.consul:1.0.0
     volumes:
     - ./:/source/
     working_dir: /source
@@ -44,9 +44,10 @@ services:
     - "--get"
     environment:
       <<: *hashicorp-config
-    image: docker.pkg.github.com/pennsignals/secrets/secret:1.2.0
+    image: ghcr.io/pennsignals/secrets/secrets.vault:1.2.0
     volumes:
     - ./:/source/
+    working_dir: /source
 
   # put secrets to vault
   secrets_put:
@@ -54,6 +55,7 @@ services:
     - "--put"
     environment:
       <<: *hashicorp-config
-    image: docker.pkg.github.com/pennsignals/secrets/secret:1.2.0
+    image: ghcr.io/pennsignals/secrets/secrets.vault:1.2.0
     volumes:
     - ./:/source/
+    working_dir: /source
