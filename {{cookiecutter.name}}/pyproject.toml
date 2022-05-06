@@ -16,8 +16,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: Unix",
     "Operating System :: POSIX",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -31,9 +29,9 @@ requires-python = ">=3.7.4"
 readme = "readme.md"
 
 [project.urls]
-Homepage = "https://github.com/pennsignals/{{cookiecutter.repo}}"
-Source = "https://github.com/pennsignals/{{cookiecutter.repo}}"
-Tracker = "https://github.com/pennsignals/{{cookiecutter.repo}}/issues"
+Homepage = "https://{{cookiecutter.repo}}"
+Source = "https://{{cookiecutter.repo}}"
+Tracker = "https://{{cookiecutter.repo}}/issues"
 
 [tool.black]
 line-length = 79

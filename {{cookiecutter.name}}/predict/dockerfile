@@ -4,6 +4,7 @@ FROM python:3.9.9-slim-bullseye as build
 ARG IFLAGS
 ARG TINI_VERSION=v0.19.0
 WORKDIR /tmp
+ENV FREETDS /etc/freetds
 ENV PATH /root/.local/bin:$PATH
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 COPY . .
@@ -22,6 +23,7 @@ RUN \
 FROM python:3.9.9-slim-bullseye as predict
 LABEL name="predict"
 WORKDIR /tmp
+ENV FREETDS /etc/freetds
 ENV PATH /root/.local/bin:$PATH
 COPY --from=build /etc/freetds/freetds.conf /etc/freetds/
 COPY --from=build /root/.local /root/.local
