@@ -6,4 +6,3 @@ create extension if not exists pgtap;
 
 create schema if not exists {{cookiecutter.name}};
 grant usage on schema {{cookiecutter.name}} to public;
-grant create on schema {{cookiecutter.name}} to public;
