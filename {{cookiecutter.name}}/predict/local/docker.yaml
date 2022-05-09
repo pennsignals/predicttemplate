@@ -7,7 +7,7 @@ postgres: !postgres
   host: ${POSTGRES_HOST}
   password: ${POSTGRES_PASSWORD}
   port: ${POSTGRES_PORT}
-  schema: cdisepsis
+  schema: {{cookiecutter.name}}
   sql: !asset
     path: ./predict/sql/postgres
     ext: .sql
