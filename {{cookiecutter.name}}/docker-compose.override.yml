@@ -39,12 +39,8 @@ services:
     devices:
     - /dev/net/tun
     environment:
-    - POSTGRES_HOST=postgres
-    - POSTGRES_USERNAME=postgres
-    - POSTGRES_PASSWORD=password
-    - POSTGRES_DATABASE=test
-    - POSTGRES_PORT=5432
-    - TIME_ZONE=America/New_York
+    - CONFIG=./predict/local/docker.yaml
+    - ENV=./predict/secrets/docker.env
     expose:
     - "8888"
     extra_hosts:  # for containerized f5 conflict with docker management of container's /etc/hosts
