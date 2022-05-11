@@ -1,4 +1,4 @@
-# Template for Python Prediction Microservice Projects
+# {{cookiecutter.name}}
 
 [![Release](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml)
 
