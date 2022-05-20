@@ -31,4 +31,6 @@ jobs:
         cruft create --no-input https://github.com/${{ github.repository }}
         cd example
         git init .
+        git add .
+        git commit -m 'Test example'
         docker-compose run predict.test
