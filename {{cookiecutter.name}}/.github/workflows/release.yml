@@ -1,5 +1,4 @@
-{% raw %}
-name: release
+{% raw %}name: release
 
 on:
   release:

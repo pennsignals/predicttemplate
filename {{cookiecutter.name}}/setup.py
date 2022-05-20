@@ -48,8 +48,8 @@ setup(
     entry_points={
         "console_scripts": [
             "predict = {{cookiecutter.name}}:Service.main",
-            "create-gold = {{cookiecutter.name}}:Service.create_gold",
-            "validate-gold = {{cookiecutter.name}}:Service.validate_gold",
+            "create.gold = {{cookiecutter.name}}:Service.create_gold",
+            "validate.gold = {{cookiecutter.name}}:Service.validate_gold",
             "pickle = {{cookiecutter.name}}:Model.pickle",
             # "publish.flowsheets = {{cookiecutter.name}}:Service.publish_flowsheets",
             # "publish.flowsheet = {{cookiecutter.name}}:Service.publish_flowsheet",
