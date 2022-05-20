@@ -30,4 +30,5 @@ jobs:
         pre-commit run --all-files
         cruft create --no-input https://github.com/${{ github.repository }}
         cd example
+        git init .
         docker-compose run predict.test
