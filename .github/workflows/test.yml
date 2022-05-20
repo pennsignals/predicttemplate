@@ -1,0 +1,24 @@
+name: test
+
+on:
+  push:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: test
+      run: |
+        # login in case there are any images as dependencies
+        docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+        python3.9 -m venv .venv
+        . .venv/bin/activate
+        pip install -U setuptools wheel pip
+        pip install cruft pre-commit
+        pre-commit run --all-files
+        cruft create --no-input ${{ github.repository }}
+        cd example
+        docker-compose run predict.test
