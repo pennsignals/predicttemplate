@@ -14,6 +14,8 @@ jobs:
       run: |
         # login in case there are any images as dependencies
         docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+        apt update
+        apt install python3.9
         python3.9 -m venv .venv
         . .venv/bin/activate
         pip install -U setuptools wheel pip
