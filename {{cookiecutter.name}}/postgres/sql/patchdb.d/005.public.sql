@@ -20,7 +20,7 @@ begin
     $function$
         language plpgsql
         stable
-        set seatch_path = {{cookiecutter.name}};
+        set search_path = {{cookiecutter.name}};
 
     create domain timezone as varchar
         check ( is_timezone(value) );
