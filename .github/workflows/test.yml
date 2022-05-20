@@ -30,6 +30,9 @@ jobs:
         pre-commit run --all-files
         cruft create --no-input https://github.com/${{ github.repository }}
         cd example
+        git config --global init.defaultBranch main
+        git config --global user.email "test@example.org"
+        git config --global user.name "Test Example"
         git init .
         git add .
         git commit -m 'Test example'
