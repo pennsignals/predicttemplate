@@ -28,6 +28,6 @@ jobs:
         pip install -U setuptools wheel pip
         pip install cruft pre-commit
         pre-commit run --all-files
-        cruft create --no-input ${{ github.repository }}
+        cruft create --no-input https://github.com/${{ github.repository }}
         cd example
         docker-compose run predict.test
