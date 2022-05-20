@@ -39,7 +39,7 @@ job "[[ .project ]]_predict" {
 
       env {
         CONFIG = "${NOMAD_TASK_DIR}/configuration.yaml"
-        ENV = "${NOMAD_TASK_DIR}/secrets.env"
+        ENV = "${NOMAD_SECRETS_DIR}/secrets.env"
       }
 
       resources {

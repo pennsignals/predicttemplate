@@ -62,7 +62,9 @@ begin
             )
     );
 end;
-$$ language plpgsql;
+$$
+    language plpgsql
+    set search_path = {{cookiecutter.name}};
 
 
 create or replace function down_private()
@@ -76,7 +78,9 @@ begin
     drop table greenishes;
     drop table cohorts;
 end;
-$$ language plpgsql;
+$$
+    language plpgsql
+    set search_path = {{cookiecutter.name}};
 
 
 select up_private();

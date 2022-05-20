@@ -17,7 +17,10 @@ begin
     exception when invalid_parameter_value or others then
         return false;
     end;
-    $function$ language plpgsql stable;
+    $function$
+        language plpgsql
+        stable
+        set seatch_path = {{cookiecutter.name}};
 
     create domain timezone as varchar
         check ( is_timezone(value) );
@@ -32,7 +35,9 @@ begin
         perform pg_notify(TG_TABLE_SCHEMA || '.' || TG_TABLE_NAME, last_id);
         return null;
     end;
-    $function$ language plpgsql;
+    $function$
+        language plpgsql
+        set seatch_path = {{cookiecutter.name}};
 
     create table models (
         id int primary key generated always as identity,
@@ -54,7 +59,11 @@ begin
         id int primary key generated always as identity,
         microservice_id int not null,
         model_id int not null,
-        duration tstzrange not null default tstzrange((now() at time zone 'Etc/UTC'), 'infinity', '[)'),
+        duration tstzrange not null default tstzrange(
+            (now() at time zone 'Etc/UTC'),
+            'infinity',
+            '[)' -- closed-open interval: lower is included, upper is excluded
+        ),
         -- allow as-of to be in the past
         as_of timestamptz not null default (now() at time zone 'Etc/UTC'),
         -- allow run to use a non-utc timezone for selection criteria visit date/timestamp intervals
@@ -103,7 +112,9 @@ begin
         for each statement
         execute procedure call_notify();
 end;
-$$ language plpgsql;
+$$
+    language plpgsql
+    set search_path = {{cookiecutter.name}};
 
 
 create or replace function down_public()
@@ -122,7 +133,9 @@ begin
     drop domain timezone;
     drop function is_timezone;
 end;
-$$ language plpgsql;
+$$
+    language plpgsql
+    set search_path = {{cookiecutter.name}};
 
 
 select up_public();

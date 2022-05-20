@@ -1,5 +1,7 @@
 # {{cookiecutter.name}}
 
+{{cookiecutter.description}}
+
 [![Release](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml/badge.svg)](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/release.yml)
 
 [![Test](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/test.yml/badge.svg)](https://github.com/pennsignals/{{cookiecutter.name}}/actions/workflows/test.yml)
