@@ -1,6 +1,6 @@
 ARG PGTAP_VERSION=1.2.0
 
-FROM timescale/timescaledb:2.5.0-pg14-oss as build
+FROM timescale/timescaledb:2.6.0-pg14-oss as build
 ARG PGTAP_VERSION
 WORKDIR /tmp
 ADD https://github.com/theory/pgtap/releases/download/v${PGTAP_VERSION}/pgTAP-${PGTAP_VERSION}.zip /tmp/
@@ -13,7 +13,7 @@ RUN \
     && make \
     && make install
 
-FROM timescale/timescaledb:2.5.0-pg14-oss as postgres
+FROM timescale/timescaledb:2.6.0-pg14-oss as postgres
 COPY --from=build /usr/local/share/postgresql/extension/pgtap* /usr/local/share/postgresql/extension/
 LABEL name=postgres
 COPY ./docker-entrypoint.sh /usr/local/bin/
