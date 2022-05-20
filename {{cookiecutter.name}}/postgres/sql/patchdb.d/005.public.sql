@@ -37,7 +37,7 @@ begin
     end;
     $function$
         language plpgsql
-        set seatch_path = {{cookiecutter.name}};
+        set search_path = {{cookiecutter.name}};
 
     create table models (
         id int primary key generated always as identity,
