@@ -8,7 +8,7 @@ flowsheets: !flowsheets
   url: ${EPIC_URL}/api/epic/2011/clinical/patient/addflowsheetvalue/flowsheetvalue
   username: ${EPIC_USERNAME}
 gold: ./predict/gold/gold.pkl
-model: ./predict/model/{{cookiecutter.name}}.pkl
+model: !model ./predict/model/1.0.0.pkl
 postgres: !postgres
   database: ${POSTGRES_DATABASE}
   host: ${POSTGRES_HOST}
