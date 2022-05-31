@@ -9,6 +9,6 @@ flowsheets: !flowsheets
   url: ${EPIC_URL}api/epic/2011/clinical/patient/addflowsheetvalue/flowsheetvalue
   username: ${EPIC_USERNAME}
 gold: ./predict/gold/gold.pkl
-model: ./predict/model/{{cookiecutter.name}}.pkl
+model: null
 postgres: null
 time_zone: America/New_York
