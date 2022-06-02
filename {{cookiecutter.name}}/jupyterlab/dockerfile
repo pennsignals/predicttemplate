@@ -28,7 +28,7 @@ RUN \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
     /opt/conda/bin/conda update -c defaults conda && \
-    /opt/conda/bin/conda clean -tipsy && \
+    /opt/conda/bin/conda clean -tipy && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc && \
     echo "conda activate" >> ~/.bashrc
