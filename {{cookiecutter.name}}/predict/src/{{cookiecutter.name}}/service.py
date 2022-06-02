@@ -104,7 +104,7 @@ class Cohort(Task):
         cohort = self.extract(interval)
         service.postgres.store_evidence(run, "cohorts", cohort)
 
-    def extract(  # pylint: disable=no-self-use
+    def extract(
         self,
         interval,
         data=(
@@ -152,7 +152,7 @@ class Greenish(Task):
         )
         service.postgres.store_evidence(run, "greenishes", greenish)
 
-    def extract(  # pylint: disable=no-self-use
+    def extract(
         self,
         ids: Sequence[int],
         interval: Interval,
@@ -234,7 +234,7 @@ class Predict(Task):
         logger.debug("predictions: %s", df.to_string())
         run.predictions = df
 
-    def last(  # pylint: disable=no-self-use
+    def last(
         self,
         df,
         key="subject_id",
@@ -246,7 +246,7 @@ class Predict(Task):
         df.drop(columns=[at], axis=1, inplace=True)
         return df
 
-    def one_hot(  # pylint: disable=no-self-use
+    def one_hot(
         self,
         df,
         key="kind",
