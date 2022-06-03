@@ -57,7 +57,7 @@ good-names = '''at,df,i,logger'''
 ignore = '''docs'''
 
 [tool.pylint.message_control]
-disable = '''duplicate-code,C0330'''
+disable = '''duplicate-code'''
 
 [tool.pylint.miscellaneous]
 notes = '''FIXME,XXX'''
