@@ -43,6 +43,7 @@ dependencies:
     - scipy
     - scikit-learn
     - seaborn
+    - sh
     - pytables
     - tornado
     - vega
