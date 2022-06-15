@@ -17,13 +17,26 @@ RUN \
         curl \
         file \
         git \
+        gnupg2 \
         iptables \
+        lsb-release \
         net-tools \
         wget \
     && \
     apt-get -qq clean && \
     apt-get -qq autoremove --purge && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/*
+RUN \
+    sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
+    wget --quiet -O - http://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    apt-get -qq update --fix-missing && \
+    apt-get -qq install --no-install-recommends > /dev/null \
+        postgresql-client-14 \
+    && \
+    apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
+    rm -rf /var/lib/apt/lists/*
+RUN \
     wget -q https://repo.anaconda.com/miniconda/Miniconda3-${PYTHON_VERSION}_${ANACONDA_VERSION}-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
