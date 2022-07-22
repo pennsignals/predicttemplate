@@ -71,26 +71,25 @@ Files:
     docker.yaml        # in version control identical to configuration.yaml except with an as_of datetime for gold file creation
     test.yaml          # in version control used with pytest
 
-## Virtual Environment:
+## Conda Environment:
+On the new M1 Macs, Anaconda is required to setup a local testing environment. Otherwise you can use docker (see below)
 
-    python3.9 -m venv .venv
-    . .venv/bin/activate
+### (Optional) Install anaconda via brew
+If you haven't already brew installed anaconda you'll need to do that first
 
-Install:
+    brew install --cask miniforge
 
-    pip install ".[all]"
+### Create conda env
+This script will create the conda env and install pre-commit and the {{cookiecutter.name}} package
 
---or--
+    ./create_conda.sh
+    conda activate {{cookiecutter.name}}
 
-Install in development mode for faster breaktest/fix: no reinstallation needed after changes, but this mode will not check for a broken module installer:
+## Run tests:
+To run the tests in a continuous TDD loop, where the tests will run whenever there are changes to the code:
 
-    pip install -e ".[all]"
-
-Install pre-commit:
-
-    pre-commit install
-
-Run pre-commit directly without commiting:
+    ./tdd.sh
+## Run pre-commit directly without commiting:
 
     CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
 
@@ -102,15 +101,15 @@ The linters like pylint and flake8 that run during pre-commitand likely indicate
 
 The tests that run with pytest that run during pre-commit indicate real problems with the code.
 
-Run commit:
+## Run commit:
 
     CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
 
-Deactivate venv:
+## Deactivate conda:
 
-    deactivate
+    conda deactivate
 
-Rebuild the postgres container and remove the docker volume if the database schema is changed.
+## Rebuild the postgres container and remove the docker volume if the database schema is changed.
 
     docker system prune
     docker volume prune
@@ -125,10 +124,10 @@ Runs pre-commit inside an isolated container. This is also what runs remotely in
 
 ## Validation
 
-Pull, reinstall, and validate gold:
+### Pull, reinstall, and validate gold:
 
     git pull
-    pip install .[all]
+    ./create_conda.sh
 
 Uses as_of from the docker.yaml configuration file and overwrites the gold file.
 
