@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 . /opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh
-conda env remove --name {{cookiecotter.name}}
+conda env remove --name {{cookiecutter.name}}
 cat << EOF > test_environment.yml
-name: {{cookiecotter.name}}
+name: {{cookiecutter.name}}
 channels:
     - conda-forge
 # NOTICE:
@@ -21,6 +21,6 @@ tr '\n' , < setup.py | grep -o "INSTALL_REQUIRES =.*TEST_REQUIRES =" | tr , '\n'
     sed 's/setuptools>.*$/setuptools/g' | \
     sed 's/setuptools_scm[toml]>.*$/setuptools_scm[toml]/g' >> test_environment.yml
 conda env create -f test_environment.yml && \
-conda activate {{cookiecotter.name}} && \
+conda activate {{cookiecutter.name}} && \
 pip install pre-commit &&  pre-commit install && pip install -e ".[all]"
 rm test_environment.yml
