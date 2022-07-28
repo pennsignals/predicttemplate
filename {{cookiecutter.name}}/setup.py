@@ -5,11 +5,7 @@
 from setuptools import find_packages, setup
 
 INSTALL_REQUIRES = (
-    (
-        "dsdk[psycopg2,pymssql]@"
-        "git+https://github.com/pennsignals/dsdk.git"
-        "@1.5.6#egg=dsdk"
-    ),
+    "dsdk>=1.5.7",
     "numpy>=1.22.0",
     "pandas>=1.3.5",
     "pip>=22.0.4",

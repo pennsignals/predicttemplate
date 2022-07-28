@@ -10,6 +10,7 @@ dependencies:
     - altair_viewer
     - black
     - diff-match-patch
+    - dsdk
     - freetds
     - hdf5
     - hdf5plugin
