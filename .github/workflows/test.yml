@@ -23,19 +23,15 @@ jobs:
 
     - name: test
       run: |
-        # login in case there are any images as dependencies
-        docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
         pip install -U setuptools wheel pip
         pip install cruft pre-commit
         pre-commit run --all-files
-        cruft create --no-input https://github.com/${{ github.repository }}
-        cd example
+        cruft create --no-input https://github.com/${{ github.repository }} servicecanary.json
+        cd servicecanary
         git config --global init.defaultBranch main
-        git config --global user.email "test@example.org"
-        git config --global user.name "Test Example"
+        git config --global user.email "pensignals123@users.noreply.github.com"
+        git config --global user.name "Pennsignals Bot"
         git init .
         git add .
-        git commit -m 'Test example'
-        # uses python version in dockerfile
-        # TODO consider passing a build arg for python version
-        docker-compose run predict.test
+        git commit -m 'Serivce canary'
+        git push origin main --force

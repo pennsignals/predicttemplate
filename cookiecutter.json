@@ -1,5 +1,6 @@
 {
-    "description": "Project Description",
-    "name": "example",
-    "repo": "example"
+    "description": "Service Canary",
+    "name": "servicecanary",
+    "organization": "pennsignals",
+    "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}"
 }
