@@ -1,28 +1,4 @@
 repos:
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v2.37.3
-    hooks:
-      - id: pyupgrade
-        args: [--py39-plus]
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        args: [--profile, black]
-        types: [python]
-
-  - repo: https://github.com/psf/black
-    rev: 22.6.0
-    hooks:
-      - id: black
-        args: [--target-version=py39]
-
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.7.1
-    hooks:
-      - id: prettier
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
     hooks:
@@ -45,16 +21,6 @@ repos:
       - id: python-no-eval
       - id: python-no-log-warn
       - id: python-use-type-annotations
-
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.4.0
-    hooks:
-      - id: nbqa-pyupgrade
-        args: [--py39-plus]
-      - id: nbqa-isort
-      - id: nbqa-black
-        args: [--target-version=py39]
-      - id: nbqa-flake8
 
 default_language_version:
   python: python3
