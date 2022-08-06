@@ -30,9 +30,9 @@ jobs:
         cd servicecanary
         git config --global init.defaultBranch main
         git config --global user.email "pensignals123@users.noreply.github.com"
-        git config --global user.name "Pennsignals Bot"
+        git config --global user.name "Pennsignals Service Account"
         git init .
-        git remote add origin git@github.com:pennsignals/servicecanary.git
+        git remote add origin https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary.git
         git add .
         git commit -m 'Serivce canary'
         git push -u origin main --force
