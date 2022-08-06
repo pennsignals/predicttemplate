@@ -34,4 +34,4 @@ jobs:
         git init .
         git add .
         git commit -m 'Serivce canary'
-        git push origin main --force
+        git push -u origin main --force
