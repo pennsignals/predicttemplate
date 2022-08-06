@@ -23,7 +23,7 @@
 
 ## Workflow
 
-Use the jupyterlab container `docker compose up --build jupyterlab` for your data science exploration and development. Submit feature requests and bugs as issues against the upstream template repository.
+Use the jupyterlab container `docker compose up --build jupyterlab` for your data science exploration and development. Submit feature requests and bugs as issues against the template.
 
 Use the postgres container `docker compose up --build postgres` for testing schema creation, and for your local feature, evidence, and prediction storage.
 
@@ -71,31 +71,37 @@ Files:
     docker.yaml        # in version control identical to configuration.yaml except with an as_of datetime for gold file creation
     test.yaml          # in version control used with pytest
 
-## Conda Environment:
-On the new M1 Macs, Anaconda is required to setup a local testing environment. Otherwise you can use docker (see below)
+### Python env
 
-### (Optional) Install anaconda via brew
-If you haven't already brew installed anaconda you'll need to do that first
+    python3.9 -m venv .venv
+    . .venv/bin/activate
+    pip install -e .[dev]
+    pre-commit install
+    ...
+    deactivate
 
-    brew install --cask miniforge
+### Conda env
 
-### Create conda env
-This script will create the conda env and install pre-commit and the {{cookiecutter.name}} package
+This script will create a conda env and install pre-commit and the {{cookiecutter.name}} package
 
-    ./create_conda.sh
+    ./scripts/create_conda.sh
     conda activate {{cookiecutter.name}}
+    ...
+    conda deactivate
 
 ## Run tests:
+
 To run the tests in a continuous TDD loop, where the tests will run whenever there are changes to the code:
 
-    ./tdd.sh
+    ./scripts/tdd.sh
+
 ## Run pre-commit directly without commiting:
 
     CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
 
 Black and some file format fixers run during pre-commit. All are fairly safe. A failed commit due to reformatting WILL require you to simply re-add the files modified and commit.
 
-Specifically, black modifies code ONLY in a way that ensures that the code's meaning (parse tree) hasn't changed, so it is very safe.
+Specifically, black ensures that the code's meaning (parse tree) hasn't changed, so it is very safe.
 
 The linters like pylint and flake8 that run during pre-commitand likely indicate real problems with the code.
 
@@ -104,10 +110,6 @@ The tests that run with pytest that run during pre-commit indicate real problems
 ## Run commit:
 
     CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
-
-## Deactivate conda:
-
-    conda deactivate
 
 ## Rebuild the postgres container and remove the docker volume if the database schema is changed.
 
@@ -118,16 +120,14 @@ The tests that run with pytest that run during pre-commit indicate real problems
 
 Runs pre-commit inside an isolated container. This is also what runs remotely in CI / CD:
 
-    docker-compose up --build test &
+    docker compose up --build test
+    docker compose up --build pre-commit
     ...
-    docker-compose down
+    docker compose down
 
 ## Validation
 
-### Pull, reinstall, and validate gold:
-
-    git pull
-    ./create_conda.sh
+### Validate gold:
 
 Uses as_of from the docker.yaml configuration file and overwrites the gold file.
 

@@ -1,113 +1,64 @@
-FROM debian:bullseye-slim as miniconda3
-WORKDIR /root
-ARG TINI_VERSION=v0.19.0
-ARG ANACONDA_VERSION=4.9.2
-ARG PYTHON_VERSION=py39
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH /opt/conda/bin:$PATH
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+ARG CONDA=mamba
+ARG MINIFORGE_NAME=Mambaforge
+ARG MINIFORGE_VERSION=4.13.0-1
+ARG ROOT_CONTAINER=debian:bullseye-slim
+
+
+FROM ${ROOT_CONTAINER} as binaries
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+USER root
+WORKDIR /tmp
+ENV DEBIAN_FRONTEND noninteractive
 RUN \
-    chmod +x /usr/bin/tini && \
-    apt-get -qq update --fix-missing && \
-    # /dev/null quieten dpkg invoked by apt-get install
-    # essential binaries
-    apt-get -qq install --no-install-recommends > /dev/null \
+    apt-get -qq update --yes && \
+    apt-get -qq upgrade --yes && \
+    apt-get -qq install --yes --no-install-recommends \
         bzip2 \
         ca-certificates \
-        curl \
-        file \
+        gcc \
         git \
-        gnupg2 \
-        iptables \
-        lsb-release \
-        net-tools \
+        libc6-dev \
+        nano-tiny \
+        tini \
+        vim-tiny \
         wget \
-    && \
+    > /dev/null && \
     apt-get -qq clean && \
-    apt-get -qq autoremove --purge && \
     rm -rf /var/lib/apt/lists/*
-RUN \
-    sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && \
-    wget --quiet -O - http://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-    apt-get -qq update --fix-missing && \
-    apt-get -qq install --no-install-recommends > /dev/null \
-        postgresql-client-14 \
-    && \
-    apt-get -qq clean && \
-    apt-get -qq autoremove --purge && \
-    rm -rf /var/lib/apt/lists/*
-RUN \
-    wget -q https://repo.anaconda.com/miniconda/Miniconda3-${PYTHON_VERSION}_${ANACONDA_VERSION}-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
-    /opt/conda/bin/conda update -c defaults conda && \
-    /opt/conda/bin/conda clean -tipy && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc && \
-    echo "conda activate" >> ~/.bashrc
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "/bin/bash" ]
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
+CMD /bin/bash
 
-FROM miniconda3 as binaries
-WORKDIR /tmp
-ARG YQ_VERSION=v4.13.2
-ARG JQ_VERSION=jq-1.6
-ADD https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 /usr/bin/yq
-ADD https://github.com/stedolan/jq/releases/download/${JQ_VERSION}/jq-linux64 /usr/bin/jq
-# COPY jupyterlab/linux_f5cli.x86_64.deb .
-COPY jupyterlab/bashrc .
-RUN \
-    # echo '#!/bin/bash\nf5fpc -x -s -t $(yq e ".host" $1) -u $(yq e ".user" $1) -p $(yq e ".password" $1)' > /usr/local/bin/up && \
-    # echo '#!/bin/bash\nf5fpc -i' > /usr/local/bin/info && \
-    # echo '#!/bin/bash\nf5fpc -o' > /usr/local/bin/down && \
-    chmod +x /usr/bin/jq && \
-    chmod +x /usr/bin/yq && \
-    # chmod +x /usr/local/bin/up && \
-    # chmod +x /usr/local/bin/info && \
-    # chmod +x /usr/local/bin/down && \
-    # dpkg -i linux_f5cli.x86_64.deb && \
-    # rm linux_f5cli.x86_64.deb && \
-    cat bashrc >> ~/.bashrc && \
-    rm bashrc && \
-    # non-essential, for network diagnostics
-    apt-get -qq update --fix-missing && \
-    apt-get -qq install --no-install-recommends > /dev/null \
-        dnsutils \
-        iproute2 \
-        net-tools \
-        ppp \
-        procps \
-        vim \
-    && \
-    apt-get -qq clean && \
-    apt-get -qq autoremove --purge && \
-    rm -rf /var/lib/apt/lists/*
 
-FROM binaries as venv
-WORKDIR /root
-ENV PATH /root/.venv/bin:$PATH
-ENV FREETDS /etc/freetds
-COPY freetds.conf /etc/freetds/
+FROM binaries as forge
+ARG CONDA
+ARG MINIFORGE_NAME
+ARG MINIFORGE_VERSION
+ENV CONDA_DIR=/opt/conda
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH=${CONDA_DIR}/bin:${PATH}
 COPY jupyterlab/environment.yml .
 RUN \
-    /opt/conda/bin/conda env create --prefix ~/.venv --file ~/environment.yml && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" > ~/.bashrc && \
-    echo "conda activate ~/.venv" >> ~/.bashrc && \
-    . ~/.bashrc && \
-    mkdir -p /root/.jupyter && \
-    echo "c.ServerApp.token = ''" > /root/.jupyter/jupyter_notebook_config.py && \
-    mkdir -p /root/.jupyter/custom && \
-    echo -e ".container { width:99% !important; }\nelement.style { max-width: 99% !important; }" > /root/.jupyter/custom/custom.css && \
-    mkdir -p /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
-    echo '{ "theme": "JupyterLab Dark" }' > /root/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
-WORKDIR /tmp
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "jupyter", "retro", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--notebook-dir", "/tmp" ]
+    wget --no-hsts -q https://github.com/conda-forge/miniforge/releases/download/${MINIFORGE_VERSION}/${MINIFORGE_NAME}-${MINIFORGE_VERSION}-Linux-$(uname -m).sh -O forge.sh && \
+    /bin/bash forge.sh -b -p ${CONDA_DIR} && \
+    rm forge.sh && \
+    ${CONDA} env update --name base --file environment.yml && \
+    rm environment.yml && \
+    ${CONDA} init && \
+    ${CONDA} clean --tarballs --index-cache --packages --yes && \
+    find ${CONDA_DIR} -follow -type f -name '*.a' -delete && \
+    find ${CONDA_DIR} -follow -type f -name '*.pyc' -delete && \
+    ${CONDA} clean --force-pkgs-dirs --all --yes  && \
+    echo ". ${CONDA_DIR}/etc/profile.d/conda.sh && ${CONDA} activate base" >> /etc/skel/.bashrc && \
+    echo ". ${CONDA_DIR}/etc/profile.d/conda.sh && ${CONDA} activate base" >> ~/.bashrc
 
-FROM venv as jupyterlab
+
+FROM forge as jupyterlab
 LABEL name="jupyterlab"
-WORKDIR /root
-COPY requirements.txt .
 RUN \
-    pip install -r requirements.txt
-WORKDIR /tmp
+    mkdir -p ~/.jupyter && \
+    echo "c.ServerApp.token = ''" > ~/.jupyter/jupyter_notebook_config.py && \
+    mkdir -p ~/.jupyter/custom && \
+    echo -e ".container { width:99% !important; }\nelement.style { max-width: 99% !important; }" > ~/.jupyter/custom/custom.css && \
+    mkdir -p ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
+    echo '{ "theme": "JupyterLab Dark" }' > ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+CMD jupyter retro --ip=0.0.0.0 --allow-root --no-browser --notebook-dir /tmp

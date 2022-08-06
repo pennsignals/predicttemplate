@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 """Model."""
 
-from pickle import (
-    dump,
-    HIGHEST_PROTOCOL,
-)
-from typing import Callable, Dict, Optional, Sequence
+from collections.abc import Sequence
+from pickle import HIGHEST_PROTOCOL, dump
+from typing import Callable, Dict, Optional
 
-from dsdk import Model as BaseModel, now_utc_datetime
+from dsdk import Model as BaseModel
+from dsdk import now_utc_datetime
 from pandas import DataFrame, Series
 
 
@@ -67,7 +65,7 @@ class Model(BaseModel):
     @classmethod
     def pickle(
         cls,
-        dictionary: Optional[Dict] = None,
+        dictionary: Optional[dict] = None,
         path: str = "./predict/model/{{cookiecutter.name}}.pkl",
     ):
         """Pickle dictionary as model."""

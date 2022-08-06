@@ -3,7 +3,7 @@ name: test
 on:
   push:
   schedule:
-  - cron: "0 0 * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   test:
@@ -13,29 +13,29 @@ jobs:
         python-version: ["3.9"]
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
 
-    - name: setup_python${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: setup_python${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: test
-      run: |
-        # login in case there are any images as dependencies
-        docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-        pip install -U setuptools wheel pip
-        pip install cruft pre-commit
-        pre-commit run --all-files
-        cruft create --no-input https://github.com/${{ github.repository }}
-        cd example
-        git config --global init.defaultBranch main
-        git config --global user.email "test@example.org"
-        git config --global user.name "Test Example"
-        git init .
-        git add .
-        git commit -m 'Test example'
-        # uses python version in dockerfile
-        # TODO consider passing a build arg for python version
-        docker-compose run predict.test
+      - name: test
+        run: |
+          # login in case there are any images as dependencies
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          pip install -U setuptools wheel pip
+          pip install cruft pre-commit
+          pre-commit run --all-files
+          cruft create --no-input https://github.com/${{ github.repository }}
+          cd example
+          git config --global init.defaultBranch main
+          git config --global user.email "test@example.org"
+          git config --global user.name "Test Example"
+          git init .
+          git add .
+          git commit -m 'Test example'
+          # uses python version in dockerfile
+          # TODO consider passing a build arg for python version
+          docker-compose run predict.test

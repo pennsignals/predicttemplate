@@ -1,52 +1,54 @@
 channels:
-    - conda-forge
-# NOTICE:
-#   setup.py is authoritative for production use.
-#   Synchronize critical common production dependency versions
-#   between this file and setup.py
+  - conda-forge
+  - main # pymssql
+  # pyproject.toml is authoritative for the python module
+  # pin any key dependencies to match pyproject.toml
 dependencies:
-    - python=3.9
-    - altair
-    - altair_viewer
-    - black
-    - diff-match-patch
-    - dsdk
-    - freetds
-    - hdf5
-    - hdf5plugin
-    - h5py
-    - ipykernel
-    - isort
-    - jupyter_conda
-    - jupyter_server
-    - jupyterlab
-    - jupyterlab_code_formatter
-    - jupyterlab-drawio
-    - jupyterlab_execute_time
-    - jupyterlab-git
-    - jupyterlab-latex
-    - jupyterlab-pullrequests
-    - libpq
-    - lz4
-    - matplotlib
-    - nb_conda_kernels
-    - numpy
-    - numexpr
-    - nodejs
-    - pandas
-    - pip>=22.0.4
-    - psycopg2
-    - pymssql
-    - python-dateutil
-    - pyyaml
-    - pyzmq
-    - retrolab
-    - scipy
-    - scikit-learn
-    - seaborn
-    - sh
-    - pytables
-    - tornado
-    - vega
-    - vega_datasets
-    - wheel
+  - python=3.9
+  - altair
+  - altair_viewer
+  - black
+  - diff-match-patch
+  - dsdk
+  - freetds
+  - hdf5
+  - hdf5plugin
+  - h5py
+  - ipykernel
+  - isort
+  - jupyter_conda
+  - jupyter_server
+  - jupyterlab
+  - jupyterlab_code_formatter
+  - jupyterlab-drawio
+  - jupyterlab_execute_time
+  - jupyterlab-git
+  - jupyterlab-latex
+  - jupyterlab-pullrequests
+  - libpq
+  - lz4
+  - matplotlib
+  - nb_conda_kernels
+  - numpy
+  - numexpr
+  - nodejs
+  - pandas
+  - pip>=22.0.4
+  - pip:
+      - dsdk>=1.6.0
+      - jupyterlab_skip_traceback
+      - sh
+      - vega
+      - vega_datasets
+  - psycopg2
+  - pymssql
+  - python-dateutil
+  - pyyaml
+  - pyzmq
+  - retrolab
+  - scipy
+  - scikit-learn
+  - seaborn
+  - pytables
+  - tornado
+  - wheel

@@ -1,51 +1,66 @@
+ARG PYTHON_VERSION="3.9"
+ARg ROOT_CONTAINER=python:${PYTHON_VERSION}-slim-bullseye
+
 ARG IFLAGS="--quiet --no-cache-dir --user"
 
-FROM python:3.9.9-slim-bullseye as build
-ARG IFLAGS
-ARG TINI_VERSION=v0.19.0
+FROM ${ROOT_CONTAINER} as binaries
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+USER root
 WORKDIR /tmp
-ENV FREETDS /etc/freetds
-ENV PATH /root/.local/bin:$PATH
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
-COPY . .
-COPY freetds.conf /etc/freetds/
-COPY license.txt .
+ENV DEBIAN_FRONTEND noninteractive
 RUN \
-    chmod +x /usr/bin/tini && \
-    apt-get -qq update --fix-missing && \
-    apt-get -qq install --no-install-recommends git > /dev/null && \
-    pip install -U pip setuptools wheel && \
-    pip install ${IFLAGS} "." && \
+    apt-get -qq update --yes && \
+    apt-get -qq upgrade --yes && \
+    apt-get -qq install --yes --no-install-recommends \
+	gcc \
+	git \
+	libc6-dev \
+	libyaml-dev \
+	tini \
+    > /dev/null && \
     apt-get -qq clean && \
-    apt-get -qq autoremove --purge && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    pip install -U pip setuptools wheel
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 
-FROM python:3.9.9-slim-bullseye as predict
-LABEL name="predict"
-WORKDIR /tmp
-ENV FREETDS /etc/freetds
-ENV PATH /root/.local/bin:$PATH
-COPY --from=build /etc/freetds/freetds.conf /etc/freetds/
-COPY --from=build /root/.local /root/.local
-COPY --from=build /tmp/predict/sql /tmp/predict/sql
-COPY --from=build /usr/bin/tini /usr/bin
+
+FROM binaries as source
+COPY . .
+
+
+FROM source as pre-commit
+RUN \
+    pip install ".[dev]"
+CMD pre-commit run --all-files
+
+
+FROM source as test
+RUN \
+    pip install ".[dev]"
+CMD pytest
+
+
+FROM source as build-wheel
+CMD pip wheel --no-deps -w ./dist .
+
+
+FROM binaries as install-wheel
+CMD pip install --find-links=./dist {{coockiecutter.name}}[dev]
+
+
+FROM source as build-predict
+RUN \
+    pip wheel --no-deps -w ./dist .
+
+
+FROM binaries as predict
+COPY --from=source /etc/freetds/freetds.conf /etc/freetds/
+COPY --from=source /tmp/predict/sql /tmp/predict/sql
+COPY --from=build-predict /tmp/dist/ /tmp/dist
 RUN \
     ln -s /local ./predict/local && \
     ln -s /secrets ./predict/secrets && \
     ln -s /model ./predict/model && \
-    ln -s /gold ./predict/gold
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
+    ln -s /gold ./predict/gold && \
+    pip install --find-links=./dist {{coockiecutter.name}}
 CMD ["predict"]
-
-FROM build as predict.test
-ARG IFLAGS
-LABEL name="predict.test"
-WORKDIR /tmp
-RUN \
-    pip install ${IFLAGS} ".[all]" && \
-    ln -s /local ./predict/local && \
-    ln -s /secrets ./predict/secrets && \
-    ln -s /model ./predict/model && \
-    ln -s /gold ./predict/gold
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "pre-commit", "run", "--all-files" ]

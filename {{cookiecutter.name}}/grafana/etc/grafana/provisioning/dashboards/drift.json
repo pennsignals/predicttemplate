@@ -109,9 +109,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "column"
               }
             ]
@@ -139,12 +137,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": null,
         "definition": "select\n    r.specific_schema\nfrom\n    information_schema.routines as r\nwhere\n    routine_name = 'drift_panels'\n    and not exists (\n        select\n            1\n        from\n            information_schema.parameters as p\n        where\n            p.specific_catalog = r.specific_catalog\n            and p.specific_schema = r.specific_schema\n            and p.specific_name = r.routine_name\n        )",
@@ -167,12 +161,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": null,
         "definition": "select\n    name\nfrom\n    ${schema:raw}.drift_panels()",
@@ -195,12 +185,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": null,
         "definition": "select\n  version\nfrom\n  ${schema:raw}.microservices\norder by\n  version",
@@ -223,12 +209,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": null,
         "definition": "select\n  version\nfrom\n  ${schema:raw}.models\norder by\n  version",

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Pypredict module."""
 
 from .model import Model

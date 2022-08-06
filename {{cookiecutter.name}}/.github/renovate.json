@@ -1,17 +1,10 @@
 {
-    "enabled": true,
-    "packageRules": [
-        {
-          "matchDatasources": ["docker"],
-          "matchPaths":
-          [
-            "+(deploy_config.yml)"
-            ],
-          "registryUrls":
-          [
-            "docker.pkg.github.com",
-            "docker.io"
-          ]
-        }
-      ]
+  "enabled": true,
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPaths": ["+(deploy_config.yml)"],
+      "registryUrls": ["docker.pkg.github.com", "docker.io"]
+    }
+  ]
 }

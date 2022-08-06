@@ -1,76 +1,60 @@
 version: "3.8"
 
 volumes:
-  pgadmin-data:
   postgres-data:
 
 services:
-
   grafana:
     depends_on:
-    - postgres
+      - postgres
     environment:
-    - GF_SECURITY_ADMIN_PASSWORD=admin
-    - GF_AUTH_ANONYMOUS_ENABLED=true
-    - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-    - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-    - GF_REPORTING_ENABLED=false
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_REPORTING_ENABLED=false
     expose:
-    - "3000"
+      - "3000"
     image: grafana/grafana-oss:8.2.1
     ports: # host port: container port
-    - "3000:3000"
+      - "3000:3000"
     restart: always
     stop_signal: SIGINT
     volumes:
-    - ./grafana/etc/grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/etc/grafana/provisioning:/etc/grafana/provisioning
 
   jupyterlab:
     build:
       context: .
       dockerfile: jupyterlab/dockerfile
       target: jupyterlab
-      args:
-      - PYTHON_VERSION=py39
-    cap_add:
-    - net_admin
     depends_on:
-    - postgres
-    devices:
-    - /dev/net/tun
+      - postgres
     environment:
-    - CONFIG=./predict/local/docker.yaml
-    - ENV=./predict/secrets/docker.env
+      - CONFIG=./predict/local/docker.yaml
+      - ENV=./predict/secrets/docker.env
     expose:
-    - "8888"
-    extra_hosts:  # for containerized f5 conflict with docker management of container's /etc/hosts
-    - "dns1:170.212.249.133"  # use with nslookup
-    - "dns2:170.212.24.5"  # use with nslookup
+      - "8888"
     ports: # host port: container port
-    - "8888:8888" # jupyterlab
-    # - "44444:44444" # containerized f5
+      - "8888:8888" # jupyterlab
     volumes:
-    - ./predict/gold:/gold:rw
-    - ./predict/local:/local:rw
-    - ./predict/model:/model:rw
-    - ./predict/secrets:/secrets:ro
-    - ./:/tmp
+      - ./predict/gold:/gold:rw
+      - ./predict/local:/local:rw
+      - ./predict/model:/model:rw
+      - ./predict/secrets:/secrets:ro
+      - ./:/tmp
 
-  pgadmin:
-    environment:
-    - PGADMIN_DEFAULT_EMAIL=pgadmin@pgadmin.org
-    - PGADMIN_DEFAULT_PASSWORD=password
-    depends_on:
-    - postgres
-    expose:
-    - "8080"
-    image: dpage/pgadmin4:6.7
-    ports: # host port: container port
-    - "8080:80"
-    restart: always
-    stop_signal: SIGINT
-    volumes:
-    - pgadmin-data:/var/lib/pgadmin
+  binaries:
+    build:
+      context: .
+      dockerfile: jupyterlab/dockerfile
+      target: binaries
+
+  forge:
+    build:
+      context: .
+      dockerfile: jupyterlab/dockerfile
+      target: forge
 
   postgres:
     build:
@@ -78,21 +62,21 @@ services:
       dockerfile: dockerfile
       target: postgres
     environment:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=password
-    - POSTGRES_DB=test
-    - TIMESCALEDB_TELEMETRY=off
-    - TS_TUNE_MEMORY=8GB
-    - TS_TUNE_NUM_CPUS=4
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=test
+      - TIMESCALEDB_TELEMETRY=off
+      - TS_TUNE_MEMORY=8GB
+      - TS_TUNE_NUM_CPUS=4
     expose:
-    - "5432"
+      - "5432"
     ports: # host port: container port
-    - "5432:5432"
+      - "5432:5432"
     restart: always
     stop_signal: SIGINT
     volumes:
-    - postgres-data:/var/lib/postgresql/data
-    - ./postgres/sql/patchdb.d:/docker-entrypoint-patchdb.d
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/sql/patchdb.d:/docker-entrypoint-patchdb.d
 
   # docker-compose run predict predict
   # docker-compose run predict publish.flowsheets
@@ -100,22 +84,22 @@ services:
   # docker-compose run predict validate.gold
   predict:
     depends_on:
-    - postgres
+      - postgres
     environment:
-    - CONFIG=./predict/local/docker.yaml
-    - ENV=./predict/secrets/docker.env
+      - CONFIG=./predict/local/docker.yaml
+      - ENV=./predict/secrets/docker.env
     volumes:
-    - ./predict/gold:/gold:rw
-    - ./predict/local:/local:ro
-    - ./predict/model:/model:ro
-    - ./predict/secrets:/secrets:ro
+      - ./predict/gold:/gold:rw
+      - ./predict/local:/local:ro
+      - ./predict/model:/model:ro
+      - ./predict/secrets:/secrets:ro
 
   predict.test:
     environment:
-    - CONFIG=./predict/local/test.yaml
-    - ENV=./predict/secrets/example.env
+      - CONFIG=./predict/local/test.yaml
+      - ENV=./predict/secrets/example.env
     volumes:
-    - ./predict/gold:/gold:rw
-    - ./predict/local:/local:ro
-    - ./predict/model:/model:ro
-    - ./predict/secrets:/secrets:ro
+      - ./predict/gold:/gold:rw
+      - ./predict/local:/local:ro
+      - ./predict/model:/model:ro
+      - ./predict/secrets:/secrets:ro
