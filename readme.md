@@ -1,4 +1,4 @@
-# dsdk_cookie
+# servicetemplate
 This repo should be used as a template for new data science projects at Penn Medicine, especially for any project that is expected to push data back into the EMR
 
 ## Instructions
