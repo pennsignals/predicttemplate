@@ -32,6 +32,7 @@ jobs:
         git config --global user.email "pensignals123@users.noreply.github.com"
         git config --global user.name "Pennsignals Bot"
         git init .
+        git remote add origin git@github.com:pennsignals/servicecanary.git
         git add .
         git commit -m 'Serivce canary'
         git push -u origin main --force
