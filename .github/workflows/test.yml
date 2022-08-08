@@ -34,6 +34,6 @@ jobs:
         git init .
         git remote add origin https://github.com/pennsignals/servicecanary
         git add .
-        echo ./.cruft.json
+        cat ./.cruft.json
         git commit -m 'Serivce canary'
         git push https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary
