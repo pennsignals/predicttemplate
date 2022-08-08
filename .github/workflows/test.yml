@@ -36,4 +36,4 @@ jobs:
         git add .
         cat ./.cruft.json
         git commit -m 'Serivce canary'
-        git push -U origin main
+        git push -u origin main
