@@ -36,4 +36,4 @@ jobs:
         git add .
         cat ./.cruft.json
         git commit -m 'Serivce canary'
-        git push https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary
+        git push -U origin main
