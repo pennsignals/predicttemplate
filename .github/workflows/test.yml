@@ -22,6 +22,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: test
+      env:
+        REPO_KEY: ${{ secrets.PAT }}
+        USERNAME: github-actions[bot]
       run: |
         pip install -U setuptools wheel pip
         pip install cruft pre-commit
@@ -29,10 +32,9 @@ jobs:
         cruft create --no-input https://github.com/${{ github.repository }}
         cd servicecanary
         git config --global init.defaultBranch main
-        git config --global user.email "pensignals123@users.noreply.github.com"
-        git config --global user.name "Pennsignals Service Account"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "41898282+github-actions[bot]@users.noreply.github.com"
         git init .
-        git remote add origin https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary
         git add .
         git commit -m 'Serivce canary'
-        git push -u origin main --force
+        git push --force "https://github-actions[bot]:$REPO_KEY@github.com/pennsignals/servicecanary.git"
