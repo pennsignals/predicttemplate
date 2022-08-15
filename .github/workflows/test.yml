@@ -32,7 +32,7 @@ jobs:
         git config --global user.email "pennsignals123@users.noreply.github.com"
         git config --global user.name "pennsignals123@users.noreply.github.com"
         git init .
-        git remote add origin "https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary.git"
+        git remote add origin "https://github.com/pennsignals/servicecanary.git"
         git add -A
         git commit -m 'Serivce canary'
-        git push origin main -f
+        git push origin "https://${{ secrets.PAT }}@github.com/pennsignals/servicecanary.git" main -f
