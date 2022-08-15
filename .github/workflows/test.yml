@@ -24,6 +24,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: test
+      env:
+        GITHUB_TOKEN: ${{ secrets.PAT }}
       run: |
         pip install -U setuptools wheel pip
         pip install cruft pre-commit
@@ -36,4 +38,4 @@ jobs:
         git init .
         git add -A
         git commit -m 'Serivce canary'
-        git push -u origin "https://pennsignals123:${{ secrets.PAT }}@github.com/pennsignals/servicecanary.git" HEAD:main -f -v
+        git push -u origin "https://pennsignals123:$GITHUB_TOKEN@github.com/pennsignals/servicecanary.git" HEAD:main -f -v
