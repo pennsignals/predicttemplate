@@ -37,4 +37,4 @@ jobs:
         git init .
         git add -A
         git commit -m 'Serivce canary'
-        git push -u --force "https://github-actions[bot]:$REPO_KEY@github.com/pennsignals/servicecanary.git"
+        git push -u "https://github-actions[bot]:$REPO_KEY@github.com/pennsignals/servicecanary.git" -f
