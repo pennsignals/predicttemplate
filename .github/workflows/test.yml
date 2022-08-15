@@ -15,6 +15,8 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PAT }}
 
     - name: setup_python${{ matrix.python-version }}
       uses: actions/setup-python@v3
@@ -35,6 +37,7 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "41898282+github-actions[bot]@users.noreply.github.com"
         git init .
+        git remote set-url origin "https://x-access-token:${{ secrets.PAT }}github.com/pennsignals/servicecanary.git"
         git add -A
         git commit -m 'Serivce canary'
-        git push -u "https://github-actions[bot]:$REPO_KEY@github.com/pennsignals/servicecanary.git" main -f
+        git push origin main -f
