@@ -38,4 +38,4 @@ jobs:
         git init .
         git add -A
         git commit -m 'Serivce canary'
-        git push -u origin "https://pennsignals123:$GITHUB_TOKEN@github.com/pennsignals/servicecanary.git" HEAD:main -f -v
+        git push "https://pennsignals123:$GITHUB_TOKEN@github.com/pennsignals/servicecanary.git" -u main -f -v
