@@ -15,8 +15,6 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.PAT }}
 
     - name: setup_python${{ matrix.python-version }}
       uses: actions/setup-python@v3
