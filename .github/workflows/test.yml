@@ -36,6 +36,6 @@ jobs:
         git add -A
         git commit -m 'Serivce canary'
         git config --global credential.helper store
-        git config --global credential.https://github.com.username pennsignals123
+        git config --global credential.https://github.com/pennsignals/servicecanary.git.username pennsignals123
         echo "https://pennsignals123:${{ secrets.PAT }}@github.com" > ~/.git-credentials
         git push -u origin main -f -v
