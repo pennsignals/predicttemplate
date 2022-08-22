@@ -29,13 +29,12 @@ jobs:
         cruft create --no-input https://github.com/${{ github.repository }}
         cd servicecanary
         git config --global init.defaultBranch main
-        git config --global user.email "pennsignals123@users.noreply.github.com"
-        git config --global user.name "pennsignals123"
         git init .
         git remote add origin "https://github.com/pennsignals/servicecanary.git"
         git add -A
-        git commit -m 'Serivce canary'
-        git config --global credential.helper store
-        git config --global credential.https://github.com/pennsignals/servicecanary.git.username pennsignals123
-        echo "https://pennsignals123:${{ secrets.PAT }}@github.com" > ~/.git-credentials
+        git config user.email "pennsignals123@users.noreply.github.com"
+        git config user.name "pennsignals123"
+        git config --add credential.helper 'cache --timeout=300'
+        (echo url=https://github.com; echo username=pennsignals123; echo password=${{ secrets.PAT }}; echo) | git credential approve
+        git commit -m 'Serivce canary' --no-verify
         git push -u origin main -f -v
