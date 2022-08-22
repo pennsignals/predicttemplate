@@ -30,6 +30,7 @@ jobs:
         cd servicecanary
         git config --global init.defaultBranch main
         git config --global credential.helper 'cache --timeout=30'
+        git config --global credential.https://github.com.username pennsignals123
         git config --global user.email "pennsignals123@users.noreply.github.com"
         git config --global user.name "pennsignals123"
         git config --global user.password "${{ secrets.PAT }}"
