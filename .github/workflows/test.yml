@@ -29,10 +29,10 @@ jobs:
         cruft create --no-input https://github.com/${{ github.repository }}
         cd servicecanary
         git config --global init.defaultBranch main
+        git config --global credential.helper 'cache --timeout=30'
         git config --global user.email "pennsignals123@users.noreply.github.com"
         git config --global user.name "pennsignals123"
-        git config --global credential.helper store
-        echo "https://pennsignals123:${{ secrets.PAT }}@github.com" > ~/.git-credentials
+        git config --global user.password "${{ secrets.PAT }}"
         git init .
         git remote add origin "https://github.com/pennsignals/servicecanary.git"
         git add -A
