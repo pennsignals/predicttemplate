@@ -30,11 +30,11 @@ jobs:
         cd servicecanary
         git config --global init.defaultBranch main
         git init .
-        git remote add origin "https://github.com/pennsignals/servicecanary.git"
+        git remote add origin https://github.com/pennsignals/servicecanary.git
         git add -A
-        git config user.email "pennsignals123@users.noreply.github.com"
-        git config user.name "pennsignals123"
-        git config --add credential.helper 'cache --timeout=300'
-        (echo url=https://github.com; echo username=pennsignals123; echo password=${{ secrets.PAT }}; echo) | git credential approve
-        git commit -m 'Serivce canary' --no-verify
+        git config user.email pennsignals123@users.noreply.github.com
+        git config user.name pennsignals123
+        git config credential.helper store
+        (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=${{ secrets.PAT }}; echo) | git credential approve
+        git commit -m 'Serivce canary'
         git push -u origin main -f -v
