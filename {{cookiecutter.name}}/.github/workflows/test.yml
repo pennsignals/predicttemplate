@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  test:
+  predict.test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,8 +20,24 @@ jobs:
 
       - name: build
         run: |
-          docker compose build --build-arg PYTHON_VERSION=${{ matrix.target }}
+          docker compose build --build-arg PYTHON_VERSION=${{ matrix.target }} predict.test
 
       - name: test
         run: |
-          docker compose run predict.test{% endraw %}
+          docker compose run predict.test
+
+  jupyterlab.build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target:
+          - "3.9"
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: build
+        run: |
+          docker compose build --build-arg PYTHON_VERSION=${{ matrix.target }} jupyterlab{% endraw %}
