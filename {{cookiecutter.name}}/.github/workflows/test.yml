@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  predict.test:
+  predict:
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,7 +26,7 @@ jobs:
         run: |
           docker compose run predict.test
 
-  jupyterlab.build:
+  jupyterlab:
     runs-on: ubuntu-latest
 
     strategy:
