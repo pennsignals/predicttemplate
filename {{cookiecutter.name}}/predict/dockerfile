@@ -1,51 +1,80 @@
+ARG PYTHON_VERSION="2.9"
+ARG ROOT_CONTAINER=python:${PYTHON_VERSION}-slim-bullseye
 ARG IFLAGS="--quiet --no-cache-dir --user"
 
-FROM python:3.9.9-slim-bullseye as build
-ARG IFLAGS
-ARG TINI_VERSION=v0.19.0
+
+FROM ${ROOT_CONTAINER} as binaries
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+USER root
 WORKDIR /tmp
+ENV DEBIAN_FRONTEND noninteractivate
 ENV FREETDS /etc/freetds
 ENV PATH /root/.local/bin:$PATH
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
-COPY . .
 COPY freetds.conf /etc/freetds/
-COPY license.txt .
 RUN \
-    chmod +x /usr/bin/tini && \
-    apt-get -qq update --fix-missing && \
-    apt-get -qq install --no-install-recommends git > /dev/null && \
-    pip install -U pip setuptools wheel && \
-    pip install ${IFLAGS} "." && \
+    apt-get -qq update --yes && \
+    apt-get -qq upgrade --yes && \
+    apt-get -qq install --yes --no-install-recommends \
+        build-essential \
+        freetds-dev \
+        git \
+        libssl-dev \
+        libyaml-dev \
+        tini \
+    > /dev/null && \
     apt-get -qq clean && \
-    apt-get -qq autoremove --purge && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    pip install -U pip setuptools wheel
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 
-FROM python:3.9.9-slim-bullseye as predict
+
+FROM binaries as source
+COPY . .
+
+
+FROM source as test
+ARG IFLAGS
+RUN \
+    pip install ${IFLAGS} ".[dev]"
+CMD pytest
+
+
+FROM test as pre-commit
+CMD pre-commit run --all-files
+
+
+FROM source as build
+ARG IFLAGS
+RUN \
+    pip install ${IFLAGS} "."
+
+
+FROM ${ROOT_CONTAINER} as predict
 LABEL name="predict"
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+USER root
 WORKDIR /tmp
 ENV FREETDS /etc/freetds
 ENV PATH /root/.local/bin:$PATH
 COPY --from=build /etc/freetds/freetds.conf /etc/freetds/
 COPY --from=build /root/.local /root/.local
 COPY --from=build /tmp/predict/sql /tmp/predict/sql
-COPY --from=build /usr/bin/tini /usr/bin
 RUN \
     ln -s /local ./predict/local && \
     ln -s /secrets ./predict/secrets && \
     ln -s /model ./predict/model && \
     ln -s /gold ./predict/gold
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["predict"]
 
-FROM build as predict.test
-ARG IFLAGS
+
+FROM test as predict.test
 LABEL name="predict.test"
+ARG IFLAGS
 WORKDIR /tmp
 RUN \
-    pip install ${IFLAGS} ".[all]" && \
     ln -s /local ./predict/local && \
     ln -s /secrets ./predict/secrets && \
     ln -s /model ./predict/model && \
     ln -s /gold ./predict/gold
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "pre-commit", "run", "--all-files" ]
