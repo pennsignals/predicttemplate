@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from json import dumps
 from typing import Sequence
+
 from dateutil.parser import parse
 from dsdk import FlowsheetMixin, Interval, ModelMixin, PostgresPredictionMixin
 from dsdk import Service as BaseService
