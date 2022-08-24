@@ -7,11 +7,27 @@ services:
       context: .
       dockerfile: predict/dockerfile
       target: predict
-    platform: linux/x86_64
 
   predict.test:
     build:
       context: .
       dockerfile: predict/dockerfile
       target: predict.test
-    platform: linux/x86_64
+
+  test:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: test
+    environment:
+      - CONFIG=./local/test.yaml
+      - ENV=./secrets/example.env
+
+  pre-commit:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: pre-commit
+    environment:
+      - CONFIG=./local/test.yaml
+      - ENV=./secrets/example.env
