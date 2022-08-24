@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
 """Model."""
 
-from pickle import (
-    dump,
-    HIGHEST_PROTOCOL,
-)
+from pickle import HIGHEST_PROTOCOL, dump
 from typing import Callable, Dict, Optional, Sequence
 
 from dsdk import Model as BaseModel, now_utc_datetime

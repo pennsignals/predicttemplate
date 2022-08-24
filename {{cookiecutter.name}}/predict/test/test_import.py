@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Test."""
 
 from {{cookiecutter.name}} import Service

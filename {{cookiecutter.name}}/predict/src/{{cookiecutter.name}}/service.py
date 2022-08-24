@@ -1,23 +1,14 @@
-# -*- coding: utf-8 -*-
 """Service."""
 
 from datetime import datetime, timedelta
 from json import dumps
 from typing import Sequence
 from dateutil.parser import parse
-from dsdk import (
-    FlowsheetMixin,
-    Interval,
-    ModelMixin,
-    PostgresPredictionMixin,
-)
+from dsdk import FlowsheetMixin, Interval, ModelMixin, PostgresPredictionMixin
 from dsdk import Service as BaseService
-from dsdk import (
-    Task,
-    configure_logger,
-)
+from dsdk import Task, configure_logger
 from pandas import DataFrame, merge
-from pkg_resources import get_distribution, DistributionNotFound
+from pkg_resources import DistributionNotFound, get_distribution
 
 from .model import Model
 

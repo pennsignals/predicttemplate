@@ -71,25 +71,67 @@ Files:
     docker.yaml        # in version control identical to configuration.yaml except with an as_of datetime for gold file creation
     test.yaml          # in version control used with pytest
 
-## Conda Environment:
-On the new M1 Macs, Anaconda is required to setup a local testing environment. Otherwise you can use docker (see below)
+### Brew python venv:
 
-### (Optional) Install anaconda via brew
+Install python once per development machine if needed:
+
+    brew install python@3.9
+
+Create a virtual env:
+
+    /opt/homebrew/Cellar/python@3.9/3.9.&lt;tab-complete&gt;/bin/python3.8 -m venv .venv
+
+Activate the virtual env:
+
+    . .venv/bin/activate
+
+Install module and pre-commit once per project:
+
+    pip install -e ".[dev]"
+    pre-commit install
+
+Development Session:
+
+    pytest
+    ...
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+    ...
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
+    ...
+
+Deactivate:
+
+    deactivate
+
+### Brew conda venv:
+
 If you haven't already brew installed anaconda you'll need to do that first
 
     brew install --cask miniforge
 
-### Create conda env
 This script will create the conda env and install pre-commit and the {{cookiecutter.name}} package
 
-    ./create_conda.sh
+    ./scripts/create_conda.sh
     conda activate {{cookiecutter.name}}
 
-## Run tests:
 To run the tests in a continuous TDD loop, where the tests will run whenever there are changes to the code:
 
-    ./tdd.sh
-## Run pre-commit directly without commiting:
+    ./scripts/tdd.sh
+
+Development Session:
+
+    pytest
+    ...
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+    ...
+    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
+    ...
+
+Deactivate:
+
+    conda deactivate
+
+## Pre-commit:
 
     CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
 
@@ -100,14 +142,6 @@ Specifically, black modifies code ONLY in a way that ensures that the code's mea
 The linters like pylint and flake8 that run during pre-commitand likely indicate real problems with the code.
 
 The tests that run with pytest that run during pre-commit indicate real problems with the code.
-
-## Run commit:
-
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
-
-## Deactivate conda:
-
-    conda deactivate
 
 ## Rebuild the postgres container and remove the docker volume if the database schema is changed.
 
@@ -127,7 +161,6 @@ Runs pre-commit inside an isolated container. This is also what runs remotely in
 ### Pull, reinstall, and validate gold:
 
     git pull
-    ./create_conda.sh
 
 Uses as_of from the docker.yaml configuration file and overwrites the gold file.
 

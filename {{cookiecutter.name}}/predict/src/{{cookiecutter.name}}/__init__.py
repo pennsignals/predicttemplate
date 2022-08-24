@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""Pypredict module."""
+"""Predict module."""
 
 from .model import Model
 from .service import Service

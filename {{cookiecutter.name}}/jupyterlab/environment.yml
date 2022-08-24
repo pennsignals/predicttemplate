@@ -1,51 +1,51 @@
 channels:
-    - conda-forge
-    - main  # needed pymssql
+  - conda-forge
+  - main  # needed pymssql
 dependencies:
-    - python=3.9
-    - altair
-    - altair_viewer
-    - black[jupyterlab]
-    - diff-match-patch
-    - freetds
-    - hdf5
-    - hdf5plugin
-    - h5py
-    - ipykernel
-    - isort
-    - jupyter_conda
-    - jupyter_server
-    - jupyterlab
-    - jupyterlab_code_formatter
-    - jupyterlab-drawio
-    - jupyterlab_execute_time
-    - jupyterlab-git
-    - jupyterlab-latex
-    - jupyterlab-pullrequests
-    - libpq
-    - lz4
-    - matplotlib
-    - nb_conda_kernels
-    - numpy
-    - numexpr
-    - nodejs
-    - pandas
-    - pip>=22.2.2
-    - pip:
+  - python=3.9
+  - altair
+  - altair_viewer
+  - black[jupyterlab]
+  - diff-match-patch
+  - freetds
+  - hdf5
+  - hdf5plugin
+  - h5py
+  - ipykernel
+  - isort
+  - jupyter_conda
+  - jupyter_server
+  - jupyterlab
+  - jupyterlab_code_formatter
+  - jupyterlab-drawio
+  - jupyterlab_execute_time
+  - jupyterlab-git
+  - jupyterlab-latex
+  - jupyterlab-pullrequests
+  - libpq
+  - lz4
+  - matplotlib
+  - nb_conda_kernels
+  - numpy
+  - numexpr
+  - nodejs
+  - pandas
+  - pip>=22.2.2
+  - pip:
       - dsdk>=1.7.1
       - jupyterlab_skip_traceback
       - sh
       - vega
       - vega_datasets
-    - psycopg2
-    - pymssql
-    - python-dateutil
-    - pyyaml
-    - pyzmq
-    - retrolab
-    - scipy
-    - scikit-learn
-    - seaborn
-    - pytables
-    - tornado==6.1
-    - wheel
+  - psycopg2
+  - pymssql
+  - python-dateutil
+  - pyyaml
+  - pyzmq
+  - retrolab
+  - scipy
+  - scikit-learn
+  - seaborn
+  - pytables
+  - tornado==6.1
+  - wheel
