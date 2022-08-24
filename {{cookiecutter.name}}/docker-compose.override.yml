@@ -66,7 +66,6 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./postgres/sql/patchdb.d:/docker-entrypoint-patchdb.d
 
-
   # docker-compose run predict predict
   # docker-compose run predict publish.flowsheets
   # docker-compose run predict create.gold

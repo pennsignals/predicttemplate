@@ -12,7 +12,6 @@ from pkg_resources import DistributionNotFound, get_distribution
 
 from .model import Model
 
-
 try:
     __version__ = get_distribution("{{cookiecutter.name}}").version
 except DistributionNotFound:

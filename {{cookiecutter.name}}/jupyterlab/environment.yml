@@ -1,6 +1,6 @@
 channels:
   - conda-forge
-  - main  # needed pymssql
+  - main # needed pymssql
 dependencies:
   - python=3.9
   - altair
