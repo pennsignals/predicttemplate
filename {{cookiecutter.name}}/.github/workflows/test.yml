@@ -9,13 +9,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        target:
+          - "3.9"
+
     steps:
     - name: checkout
       uses: actions/checkout@v3
 
+    - name: build
+        run: |
+          docker compose build --build-arg PYTHON_VERSION=${{ matrix.target }}
+
     - name: test
       run: |
-        # login in case there are any images as dependencies
-        docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-
-        docker-compose run predict.test{% endraw %}
+        docker compose run predict.test{% endraw %}
