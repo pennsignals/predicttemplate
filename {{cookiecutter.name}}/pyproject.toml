@@ -1,9 +1,8 @@
 [build-system]
 requires = [
-    "pip>=22.0.4",
-    "pytest-runner>=6.0.0",
-    "setuptools>=61.2.0",
-    "setuptools_scm[toml]>=6.4.2",
+    "pip>=22.2.2",
+    "setuptools>=65.3.0",
+    "setuptools_scm[toml]>=7.0.5",
     "wheel>=0.37.1",
 ]
 
@@ -21,12 +20,47 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
+dependencies = [
+    "dsdk>=1.7.1",
+    "numpy>=1.23.2",
+    "pandas>=1.4.3",
+    "python-dateutil",
+    "scikit-learn>=1.1.2",
+    "scipy>=1.7.3",
+]
 description = "{{cookiecutter.description}}"
-dynamic = ["dependencies", "optional-dependencies", "version"]
+dynamic = ["version"]
 license = { file = "license.txt" }
 name = "{{cookiecutter.name}}"
-requires-python = ">=3.7.4"
+requires-python = ">=3.9"
 readme = "readme.md"
+
+[project.optional-dependencies]
+dev = [
+    "astroid",
+    "black",
+    "coverage[toml]",
+    "cruft",
+    "flake8",
+    "flake8-bugbear",
+    "flake8-commas",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    # "flake8-logging-format",
+    "flake8-mutable",
+    "flake8-sorted-keys",
+    "isort",
+    "mypy",
+    "pep8-naming",
+    "pre-commit",
+    "pylint",
+    "pytest",
+    "pytest-cov",
+    "pytest-runner",
+    "types-pkg-resources",
+    "types-python-dateutil",
+    "types-pyyaml",
+]
 
 [project.urls]
 Homepage = "https://{{cookiecutter.repo}}"
@@ -50,6 +84,24 @@ show_missing = true
 branch = true
 parallel = true
 
+[tool.distutils.bdist_wheel]
+python-tag = "py39.py310"
+
+[tool.isort]
+profile = "black"
+include_trailing_comma = true
+line_length = 79
+multi_line_output = 3
+known_first_party = ["pcsnap"]
+default_section = "THIRDPARTY"
+
+[tool.mypy]
+follow_imports = "normal"
+ignore_missing_imports = false
+
+[tool.nbqa.addopts]
+flake8 = [ "--extend-ignore=F821,E501"]
+
 [tool.pylint.basic]
 good-names = '''at,df,i,logger'''
 
@@ -69,10 +121,16 @@ ignore-docstrings = "yes"
 ignore-imports = "yes"
 
 [tool.pytest.ini_options]
-addopts = "-ra --cov={{cookiecutter.name}} --cov-report term-missing --strict --ignore=.eggs --tb=short"
+addopts = "-ra --cov={{cookiecutter.name}} --cov-report term-missing --strict-markers --ignore=.eggs --tb=short"
 testpaths = ["predict/test"]
 norecursedirs = ".env .git build dist"
 python_files = "test.py tests.py test_*.py *_test.py"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["predict/src"]
 
 [tool.setuptools_scm]
 local_scheme = "dirty-tag"

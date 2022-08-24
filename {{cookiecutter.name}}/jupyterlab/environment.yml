@@ -1,16 +1,12 @@
 channels:
     - conda-forge
-# NOTICE:
-#   setup.py is authoritative for production use.
-#   Synchronize critical common production dependency versions
-#   between this file and setup.py
+    - main  # needed pymssql
 dependencies:
     - python=3.9
     - altair
     - altair_viewer
-    - black
+    - black[jupyterlab]
     - diff-match-patch
-    - dsdk
     - freetds
     - hdf5
     - hdf5plugin
@@ -34,7 +30,13 @@ dependencies:
     - numexpr
     - nodejs
     - pandas
-    - pip>=22.0.4
+    - pip>=22.2.2
+    - pip:
+      - dsdk>=1.7.1
+      - jupyterlab_skip_traceback
+      - sh
+      - vega
+      - vega_datasets
     - psycopg2
     - pymssql
     - python-dateutil
@@ -44,9 +46,6 @@ dependencies:
     - scipy
     - scikit-learn
     - seaborn
-    - sh
     - pytables
-    - tornado
-    - vega
-    - vega_datasets
+    - tornado==6.1
     - wheel
