@@ -1,7 +1,7 @@
 """Model."""
 
 from pickle import HIGHEST_PROTOCOL, dump
-from typing import Callable, Dict, Optional, Sequence
+from typing import Callable, Optional, Sequence
 
 from dsdk import Model as BaseModel
 from dsdk import now_utc_datetime
