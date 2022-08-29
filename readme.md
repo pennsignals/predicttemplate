@@ -1,4 +1,5 @@
-# servicetemplate
+# dsdk_cookie
+
 This repo should be used as a template for new data science projects at Penn Medicine, especially for any project that is expected to push data back into the EMR
 
 ## Instructions
@@ -20,9 +21,9 @@ The project name must be a valid postgres schema name, python module name, and n
 Choose a project / repo name:
 
 1. Short but does not abbreviate words
-3. All lower case
-4. No hyphens
-5. No underscores
+2. All lower case
+3. No hyphens
+4. No underscores
 
 Once cruft is installed you can run the following to create your new project:
 
@@ -31,6 +32,7 @@ cruft create https://github.com/pennsignals/dsdk_cookie
 ```
 
 ### Push to github
+
 Once your project is created you should push it to github by [making a new private repo](https://github.com/organizations/pennsignals/repositories/new) and pushing it like:
 
 ```sh
@@ -58,9 +60,11 @@ cruft update
 ```
 
 ### Further instructions
+
 For further instructions on how to use your project can be found in the `readme.md` for your project at https://github.com/pennsignals/{your-repo-name}#readme
 
 # TODO
-* Add `cruft check` to CICD in `{{cookiecutter.name}}/.github/workflows`. Maybe as part of test.yml? Maybe it's own thing?
-* Add `.github/test.yml` to root of this repo and have it run `cookiecutter .` to ensure that the template isn't broken when updates are made. See [#3](https://github.com/pennsignals/dsdk_cookie/issues/3)
-* Update `{{cookiecutter.name}}/readme.md` with instructions on how to use `cruft update`.
+
+- Add `cruft check` to CICD in `{{cookiecutter.name}}/.github/workflows`. Maybe as part of test.yml? Maybe it's own thing?
+- Add `.github/test.yml` to root of this repo and have it run `cookiecutter .` to ensure that the template isn't broken when updates are made. See [#3](https://github.com/pennsignals/dsdk_cookie/issues/3)
+- Update `{{cookiecutter.name}}/readme.md` with instructions on how to use `cruft update`.

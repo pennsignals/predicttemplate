@@ -23,7 +23,7 @@
 
 ## Workflow
 
-Use the jupyterlab container `docker compose up --build jupyterlab` for your data science exploration and development. Submit feature requests and bugs as issues against the upstream template repository.
+Use the jupyterlab container `docker compose up --build jupyterlab` for your data science exploration and development. Submit feature requests and bugs as issues against the template.
 
 Use the postgres container `docker compose up --build postgres` for testing schema creation, and for your local feature, evidence, and prediction storage.
 
@@ -105,14 +105,12 @@ Deactivate:
 
 ### Brew conda venv:
 
-If you haven't already brew installed anaconda you'll need to do that first
-
-    brew install --cask miniforge
-
 This script will create the conda env and install pre-commit and the {{cookiecutter.name}} package
 
     ./scripts/create_conda.sh
     conda activate {{cookiecutter.name}}
+    ...
+    conda deactivate
 
 To run the tests in a continuous TDD loop, where the tests will run whenever there are changes to the code:
 
@@ -128,7 +126,6 @@ Development Session:
     ...
 
 Deactivate:
-
     conda deactivate
 
 ## Pre-commit:
@@ -152,15 +149,12 @@ The tests that run with pytest that run during pre-commit indicate real problems
 
 Runs pre-commit inside an isolated container. This is also what runs remotely in CI / CD:
 
-    docker-compose up --build test &
+    docker compose up --build test
+    docker compose up --build pre-commit
     ...
-    docker-compose down
+    docker compose down
 
 ## Validation
-
-### Pull, reinstall, and validate gold:
-
-    git pull
 
 Uses as_of from the docker.yaml configuration file and overwrites the gold file.
 

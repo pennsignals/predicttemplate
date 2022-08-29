@@ -1,5 +1,6 @@
 """Service."""
 
+from collections.abc import Sequence
 from datetime import datetime, timedelta
 from json import dumps
 from typing import Sequence

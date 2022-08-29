@@ -64,7 +64,7 @@ class Model(BaseModel):
     @classmethod
     def pickle(
         cls,
-        dictionary: Optional[Dict] = None,
+        dictionary: Optional[dict] = None,
         path: str = "./predict/model/{{cookiecutter.name}}.pkl",
     ):
         """Pickle dictionary as model."""
