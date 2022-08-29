@@ -1,6 +1,0 @@
-{
-    "description": "Service Template Canary",
-    "name": "servicetemplatecanary",
-    "organization": "pennsignals",
-    "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}"
-}

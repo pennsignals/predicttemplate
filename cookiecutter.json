@@ -1,6 +1,6 @@
 {
     "description": "Example",
     "name": "example",
-    "organization": "example",
+    "organization": "organization",
     "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}"
 }
