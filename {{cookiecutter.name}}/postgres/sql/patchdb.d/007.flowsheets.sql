@@ -9,7 +9,7 @@ begin
     end if;
 
     create table flowsheets (
-        id int primary key,
+        id bigint primary key,
         created_on timestamptz not null default now(),
         profile int8range not null,
         constraint only_one_flowsheet_per_prediction
@@ -21,8 +21,8 @@ begin
     );
 
     create table flowsheet_errors (
-        id int primary key generated always as identity,
-        prediction_id int not null,
+        id bigint primary key generated always as identity,
+        prediction_id bigint not null,
         recorded_on timestamptz not null default now(),
         acknowledged_on timestamptz default null,
         name varchar not null,
@@ -38,14 +38,14 @@ begin
     );
 
     create function missing_flowsheets(
-        begin_id int default 0,
-        end_id int default 2147483647,
+        begin_id bigint default 0,
+        end_id bigint default 9223372036854775807,
         dry_run int default 0
     )
     returns table (
-        id int,
+        id bigint,
         run_id int,
-        csn int,
+        csn bigint,
         empi varchar(64),
         score double precision,
         as_of timestamptz

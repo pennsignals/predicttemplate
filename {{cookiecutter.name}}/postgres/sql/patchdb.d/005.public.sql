@@ -87,7 +87,7 @@ begin
 
     create index runs_duration_index on runs using gist (duration);
     create table predictions (
-        id int primary key generated always as identity,
+        id bigint primary key generated always as identity,
         run_id int not null,
         subject_id int not null,
         score double precision not null,

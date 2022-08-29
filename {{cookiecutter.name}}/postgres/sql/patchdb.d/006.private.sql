@@ -9,7 +9,7 @@ begin
     end if;
 
     create table cohorts (
-        id int primary key generated always as identity,
+        id bitint primary key generated always as identity,
         run_id int not null,
         subject_id int not null,
         description varchar not null,
@@ -24,7 +24,7 @@ begin
     );
 
     create table greenishes (
-        id int primary key generated always as identity,
+        id bigint primary key generated always as identity,
         run_id int not null,
         subject_id int not null,
         normal float not null,
@@ -40,7 +40,7 @@ begin
     );
 
     create table features (
-        id int primary key,
+        id bigint primary key,
         greenish float not null,
         is_animal boolean not null,
         is_vegetable boolean not null,
