@@ -37,7 +37,7 @@ jobs:
             ORG="example"
             PUSH=false
           fi;
-          cruft create --no-input https://github.com/${{ github.repository }} . $CONFIG
+          cruft create --no-input --config-file $CONFIG https://github.com/${{ github.repository }}
           cd $PROJECT
           git config --global init.defaultBranch main
           git init .
