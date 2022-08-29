@@ -97,11 +97,10 @@ parallel = true
 python-tag = "py39.py310"
 
 [tool.isort]
-profile = "black"
 include_trailing_comma = true
 line_length = 79
 multi_line_output = 3
-known_first_party = ["pcsnap"]
+known_first_party = ["{{cookiecutter.name}}"]
 default_section = "THIRDPARTY"
 
 [tool.mypy]
@@ -110,13 +109,6 @@ ignore_missing_imports = false
 
 [tool.nbqa.addopts]
 flake8 = [ "--extend-ignore=F821,E501"]
-
-[tool.isort]
-include_trailing_comma = true
-line_length = 79
-multi_line_output = 3
-known_first_party = ["{{cookiecutter.name}}"]
-default_section = "THIRDPARTY"
 
 [tool.pylint.basic]
 good-names = '''at,df,i,logger'''
