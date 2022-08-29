@@ -26,7 +26,7 @@ jobs:
           pip install -U setuptools wheel pip
           pip install cruft pre-commit
           pre-commit run --all-files
-          if [ "${{ github.repository }}" = "servicetemplate" ]; then
+          if [ "${{ github.repository }}" = "servicetemplate.git" ]; then
             CONFIG="servicecanary.json"
             NAME="servicecanary"
             ORG="pennsignals"
@@ -47,7 +47,7 @@ jobs:
           git config user.name pennsignals123
           git config credential.helper store
           git commit -m 'canary'
-          if [ ! $PUSH ]; then
+          if [ "${{ github.repository }}" != "servicetemplate.git" ]; then
             exit;
           fi
           (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.PAT }}' | jq -sRr @uri); echo) | git credential approve
