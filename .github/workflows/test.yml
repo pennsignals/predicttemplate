@@ -26,13 +26,13 @@ jobs:
           pip install -U setuptools wheel pip
           pip install cruft pre-commit
           pre-commit run --all-files
-          echo "--config-file ${{ github.event.repository.name }}canary.json"
           echo "--checkout ${{ github.ref_name }}"
+          echo "--directory ${{ github.event.repository.name }}canary"
           echo "https://github.com/${{ github.repository }}"
           cruft create \
             --no-input \
             --checkout ${{ github.ref_name }} \
-            --directory ${{ github.event.repository.name }}canary
+            --directory ${{ github.event.repository.name }}canary \
             https://github.com/${{ github.repository }}
           ls -al
           cd ${{ github.event.repository.name }}canary
