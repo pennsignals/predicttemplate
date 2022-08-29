@@ -20,24 +20,40 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: test
         run: |
           pip install -U setuptools wheel pip
-          pip install cruft pre-commit
+          pip install pre-commit
+
+      - name: pre-commit
+        run: |
           pre-commit run --all-files
-          ls -al
+
+  canary:
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+      - name: setup_python${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+        run: |
+          pip install -U setuptools wheel pip
+          pip install cruft
+
+      - name: cruft
+        run: |
           echo "cruft create \\"
           echo "    --no-input \\"
           echo "    --checkout ${{ github.ref_name }} \\"
-          echo "    --extra-context '{\"description\": \"Service Template Canary\", \"name\": \"${{ github.event.repository.name }}canary\", \"organization\": \"${{ github.repository_owner }}\", \"repo\": \"github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}\" }' \\" \
+          echo "    --extra-context '{\"description\": \"Service Template Canary\", \"name\": \"${{ github.event.repository.name }}canary\", \"organization\": \"${{ github.repository_owner }}\", \"repo\": \"github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}\" }' \\"
           echo "    https://github.com/${{ github.repository }}"
           cruft create \
             --no-input \
             --checkout ${{ github.ref_name }} \
             --extra-context '{"description": "Service Template Canary", "name": "${{ github.event.repository.name }}canary", "organization": "${{ github.repository_owner }}", "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}" }' \
             https://github.com/${{ github.repository }}
-          ls -al
           cd ${{ github.event.repository.name }}canary
           git config --global init.defaultBranch main
           git init .
