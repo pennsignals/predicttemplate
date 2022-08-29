@@ -26,15 +26,29 @@ jobs:
           pip install -U setuptools wheel pip
           pip install cruft pre-commit
           pre-commit run --all-files
-          cruft create --no-input https://github.com/${{ github.repository }}
-          cd servicecanary
+          if [ "${{ github.repository }}" = "servicetemplate" ]; then
+            CONFIG="servicecanary.json"
+            NAME="servicecanary"
+            ORG="pennsignals"
+            PUSH=true
+          else
+            CONFIG="cookiecutter.json"
+            PROJECT="example"
+            ORG="example"
+            PUSH=false
+          fi;
+          cruft create --no-input https://github.com/${{ github.repository }} . $CONFIG
+          cd $PROJECT
           git config --global init.defaultBranch main
           git init .
-          git remote add origin https://github.com/pennsignals/servicecanary.git
+          git remote add origin "https://github.com/$ORG/$PROJECT.git"
           git add -A
           git config user.email pennsignals123@users.noreply.github.com
           git config user.name pennsignals123
           git config credential.helper store
-          (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.PAT }}' | jq -sRr @uri); echo) | git credential approve
           git commit -m 'canary'
+          if [ ! $PUSH ]; then
+            exit;
+          fi
+          (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.PAT }}' | jq -sRr @uri); echo) | git credential approve
           git push -u origin main -f -v
