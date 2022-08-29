@@ -126,6 +126,7 @@ Development Session:
     ...
 
 Deactivate:
+
     conda deactivate
 
 ## Pre-commit:

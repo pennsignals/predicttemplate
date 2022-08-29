@@ -1,7 +1,8 @@
 """Model."""
 
+from collections.abc import Sequence
 from pickle import HIGHEST_PROTOCOL, dump
-from typing import Callable, Optional, Sequence
+from typing import Callable, Optional
 
 from dsdk import Model as BaseModel
 from dsdk import now_utc_datetime
