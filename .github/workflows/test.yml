@@ -31,17 +31,17 @@ jobs:
             --config-file ${{ github.event.repository.name }}canary.json \
             --checkout ${{ github.ref_name }} \
             https://github.com/${{ github.repository }}
-          cd ${{ github.event.repository.name }}
+          cd ${{ github.event.repository.name }}canary
           git config --global init.defaultBranch main
           git init .
           git remote add origin https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}canary.git
           git add -A
-          git config user.email pennsignals123@users.noreply.github.com
-          git config user.name pennsignals123
+          git config user.email ${{ secrets.username }}@users.noreply.github.com
+          git config user.name ${{ secrets.username }}
           git config credential.helper store
-          git commit -m 'canary'
+          git commit -m 'Canary'
           if [ "${{ github.event.repository.name }}" != "servicetemplate" ]; then
             exit;
           fi
-          (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.PAT }}' | jq -sRr @uri); echo) | git credential approve
+          (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.pat }}' | jq -sRr @uri); echo) | git credential approve
           git push -u origin main -f -v
