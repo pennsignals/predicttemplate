@@ -72,6 +72,7 @@ jobs:
       - name: push
         if: ${{ github.event.repository.name }} == "servicetemplate"
         run: |
+          cd ${{ github.event.repository.name }}canary
           git config credential.helper store
           (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.pat }}' | jq -sRr @uri); echo) | git credential approve
           git push -u origin main -f -v
