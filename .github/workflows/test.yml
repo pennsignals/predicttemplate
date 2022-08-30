@@ -53,12 +53,12 @@ jobs:
           echo "cruft create \\"
           echo "    --no-input \\"
           echo "    --checkout ${{ github.ref_name }} \\"
-          echo "    --extra-context '{\"description\": \"Service Template Canary\", \"name\": \"${{ github.event.repository.name }}canary\", \"organization\": \"${{ github.repository_owner }}\", \"repo\": \"github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}\" }' \\"
+          echo "    --extra-context '{\"description\": \"Canary\", \"name\": \"${{ github.event.repository.name }}canary\", \"organization\": \"${{ github.repository_owner }}\", \"repo\": \"github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}\" }' \\"
           echo "    https://github.com/${{ github.repository }}"
           cruft create \
             --no-input \
             --checkout ${{ github.ref_name }} \
-            --extra-context '{"description": "Service Template Canary", "name": "${{ github.event.repository.name }}canary", "organization": "${{ github.repository_owner }}", "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}" }' \
+            --extra-context '{"description": "Canary", "name": "${{ github.event.repository.name }}canary", "organization": "${{ github.repository_owner }}", "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}" }' \
             https://github.com/${{ github.repository }}
           cd ${{ github.event.repository.name }}canary
           git config --global init.defaultBranch main
@@ -70,7 +70,7 @@ jobs:
           git config credential.helper store
           git commit -m 'Canary'
           if [ "${{ github.event.repository.name }}" != "servicetemplate" ]; then
-            exit;
+            exit 0;
           fi
           (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.pat }}' | jq -sRr @uri); echo) | git credential approve
           git push -u origin main -f -v
