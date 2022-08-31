@@ -13,7 +13,7 @@ while [ $# -gt 0 ]; do
       host="$2"
       ;;
     -r|--repository)
-      name="$2"
+      repository="$2"
     ;;
     -p|--password)
       password="$2"
