@@ -12,7 +12,7 @@ while [ $# -gt 0 ]; do
     -h|--host)
       host="$2"
       ;;
-    -n|--name)
+    -r|--repository)
       name="$2"
     ;;
     -p|--password)
@@ -23,7 +23,14 @@ while [ $# -gt 0 ]; do
     ;;
     *)
       echo "Invalid argument: $1"
-      echo "Expected: --branch --canary --host --name --password --username"
+      echo "Required:"
+      echo "  --password"
+      echo "  --repository organization/project"
+      echo "  --username"
+      echo "Optional:"
+      echo "  --branch main"
+      echo "  --canary projectcanary"
+      echo "  --host github.com"
       exit 1
   esac
   shift
@@ -32,10 +39,12 @@ done
 
 branch=${branch:-"main"}
 host=${host:-"github.com"}
+name=${repository#*/}
+organization=${repository%/*}
 
 canary=${canary:-"${name}canary"}
 
 cd "${canary}"
 git config credential.helper store
 (echo "protocol=https"; echo "host=${host}"; echo "username=${username}"; echo password=$(printf "${password}" | jq -sRr @uri); echo) | git credential approve
-git push -u origin "${branch}" --force-with-lease -v
+git push -u origin "${branch}" --force --verbose

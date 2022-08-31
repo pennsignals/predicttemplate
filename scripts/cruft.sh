@@ -11,19 +11,22 @@ while [ $# -gt 0 ]; do
     ;;
     -h|--host)
       host="$2"
-      ;;
-    -n|--name)
-      name="$2"
     ;;
-    -o|--organization)
-      organization="$2"
+    -r|--repository)
+      repository="$2"
     ;;
     -u|--username)
       username="$2"
     ;;
     *)
       echo "Invalid argument: $1"
-      echo "Expected: --branch --canary --host --name --organization --username"
+      echo "Required:"
+      echo "  --repository organization/project"
+      echo "  --username"
+      echo "Optional:"
+      echo "  --branch main"
+      echo "  --canary projectcanary"
+      echo "  --host github.com"
       exit 1
   esac
   shift
@@ -32,6 +35,8 @@ done
 
 branch=${branch:-"main"}
 host=${host:-"github.com"}
+name=${repository#*/}
+organization=${repository%/*}
 
 canary=${canary:-"${name}canary"}
 

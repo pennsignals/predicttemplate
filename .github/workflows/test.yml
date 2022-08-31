@@ -34,16 +34,14 @@ jobs:
         run: |
           ./scripts/cruft.sh \
             --branch ${{ github.ref_name }} \
-            --name ${GITHUB_REPOSITORY#*/} \
-            --organization ${GITHUB_REPOSITORY%/*} \
+            --repository ${{ github.repository }} \
             --username ${{ secrets.username }}
 
       - name: push
-        if: ${GITHUB_REPOSITORY%/*} == "servicetemplate"
+        if: ${{ github.repository }} == "pennsignals/servicetemplate"
         run: |
           ./scripts/push.sh \
             --branch ${{ github.ref_name }} \
-            --name ${GITHUB_REPOSITORY#*/} \
-            --organization ${GITHUB_REPOSITORY%/*} \
             --password ${{ secrets.pat }}
+            --repository ${{ github.repository }} \
             --username ${{ secrets.username }} \
