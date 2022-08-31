@@ -38,7 +38,7 @@ jobs:
             --username ${{ secrets.username }}
 
       - name: push
-        if: ${{ github.repository }} == "pennsignals/servicetemplate"
+        if: ${{ github.repository == "pennsignals/servicetemplate" }}
         run: |
           ./scripts/push.sh \
             --branch ${{ github.ref_name }} \
