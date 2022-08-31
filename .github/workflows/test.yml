@@ -24,55 +24,26 @@ jobs:
       - name: setup
         run: |
           pip install -U setuptools wheel pip
-          pip install pre-commit
+          pip install cruft pre-commit
 
       - name: pre-commit
         run: |
           pre-commit run --all-files
 
-  canary:
-    needs: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9"]
-
-    steps:
-      - name: setup_python${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: setup
-        run: |
-          pip install -U setuptools wheel pip
-          pip install cruft
-
       - name: cruft
         run: |
-          echo "cruft create \\"
-          echo "    --no-input \\"
-          echo "    --checkout ${{ github.ref_name }} \\"
-          echo "    --extra-context '{\"description\": \"Canary\", \"name\": \"${{ github.event.repository.name }}canary\", \"organization\": \"${{ github.repository_owner }}\", \"repo\": \"github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}\" }' \\"
-          echo "    https://github.com/${{ github.repository }}"
-          cruft create \
-            --no-input \
-            --checkout ${{ github.ref_name }} \
-            --extra-context '{"description": "Canary", "name": "${{ github.event.repository.name }}canary", "organization": "${{ github.repository_owner }}", "repo": "github.com/{{cookiecutter.organization}}/{{cookiecutter.name}}" }' \
-            https://github.com/${{ github.repository }}
-          cd ${{ github.event.repository.name }}canary
-          git config --global init.defaultBranch main
-          git init .
-          git remote add origin https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}canary.git
-          git add -A
-          git config user.email ${{ secrets.username }}@users.noreply.github.com
-          git config user.name ${{ secrets.username }}
-          git commit -m 'Canary'
+          ./scripts/cruft.sh \
+            --branch ${{ github.ref_name }} \
+            --name ${GITHUB_REPOSITORY#*/} \
+            --organization ${GITHUB_REPOSITORY%/*} \
+            --username ${{ secrets.username }}
 
       - name: push
-        if: ${{ github.event.repository.name }} == "servicetemplate"
+        if: ${GITHUB_REPOSITORY%/*} == "servicetemplate"
         run: |
-          cd ${{ github.event.repository.name }}canary
-          git config credential.helper store
-          (echo protocol=https; echo host=github.com; echo username=pennsignals123; echo password=$(printf '${{ secrets.pat }}' | jq -sRr @uri); echo) | git credential approve
-          git push -u origin main -f -v
+          ./scripts/push.sh \
+            --branch ${{ github.ref_name }} \
+            --name ${GITHUB_REPOSITORY#*/} \
+            --organization ${GITHUB_REPOSITORY%/*} \
+            --password ${{ secrets.pat }}
+            --username ${{ secrets.username }} \
