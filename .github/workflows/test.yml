@@ -42,6 +42,6 @@ jobs:
         run: |
           ./scripts/push.sh \
             --branch ${{ github.ref_name }} \
-            --password ${{ secrets.pat }}
+            --password ${{ secrets.pat }} \
             --repository ${{ github.repository }} \
-            --username ${{ secrets.username }} \
+            --username ${{ secrets.username }}
