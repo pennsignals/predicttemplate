@@ -48,14 +48,11 @@ RUN \
     pip install ${IFLAGS} "."
 
 
-FROM ${ROOT_CONTAINER} as predict
+FROM binaries as predict
 LABEL name="predict"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 WORKDIR /tmp
-ENV FREETDS /etc/freetds
-ENV PATH /root/.local/bin:$PATH
-COPY --from=build /etc/freetds/freetds.conf /etc/freetds/
 COPY --from=build /root/.local /root/.local
 COPY --from=build /tmp/predict/sql /tmp/predict/sql
 RUN \
