@@ -95,9 +95,6 @@ services:
       - ./predict/secrets:/secrets:ro
 
   predict.test:
-    environment:
-      - CONFIG=./predict/local/test.yaml
-      - ENV=./predict/secrets/example.env
     volumes:
       - ./predict/gold:/gold:rw
       - ./predict/local:/local:ro
