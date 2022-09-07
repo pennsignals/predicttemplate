@@ -94,9 +94,9 @@ Development Session:
 
     pytest
     ...
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+    pre-commit run --all-files
     ...
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
+    git commit -m '...'
     ...
 
 Deactivate:
@@ -120,18 +120,24 @@ Development Session:
 
     pytest
     ...
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+    pre-commit run --all-files
     ...
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env git commit -m '...'
+    git commit -m '...'
     ...
 
 Deactivate:
 
     conda deactivate
 
+## Pytest:
+
+    pytest
+
+Pytest uses ./predict/local/test.yaml and ./predict/secrets/example.env
+
 ## Pre-commit:
 
-    CONFIG=./predict/local/test.yaml ENV=./predict/secrets/example.env pre-commit run --all-files
+    pre-commit run --all-files
 
 Black and some file format fixers run during pre-commit. All are fairly safe. A failed commit due to reformatting WILL require you to simply re-add the files modified and commit.
 
@@ -140,6 +146,14 @@ Specifically, black modifies code ONLY in a way that ensures that the code's mea
 The linters like pylint and flake8 that run during pre-commitand likely indicate real problems with the code.
 
 The tests that run with pytest that run during pre-commit indicate real problems with the code.
+
+## Git commit:
+
+    git commit -m 'Fixed all the things'
+
+Git commit runs pre-commit, but ONLY USING the files that are staged for commit. It will then unstash any modified files.
+
+This ensures that pre-commit and the tests run on the code that will be checked in.
 
 ## Rebuild the postgres container and remove the docker volume if the database schema is changed.
 
