@@ -22,7 +22,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "dsdk>=1.7.1",
+    "dsdk>=1.7.2",
     "numpy>=1.23.2",
     "pandas>=1.4.3",
     "python-dateutil",
