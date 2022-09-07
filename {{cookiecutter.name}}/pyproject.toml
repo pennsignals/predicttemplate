@@ -106,6 +106,7 @@ default_section = "THIRDPARTY"
 [tool.mypy]
 follow_imports = "normal"
 ignore_missing_imports = false
+show_error_codes = true
 
 [tool.nbqa.addopts]
 flake8 = [ "--extend-ignore=F821,E501"]
