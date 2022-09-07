@@ -12,21 +12,3 @@ services:
       context: .
       dockerfile: predict/dockerfile
       target: predict.test
-
-  test:
-    build:
-      context: .
-      dockerfile: predict/dockerfile
-      target: test
-    environment:
-      - CONFIG=./local/test.yaml
-      - ENV=./secrets/example.env
-
-  pre-commit:
-    build:
-      context: .
-      dockerfile: predict/dockerfile
-      target: pre-commit
-    environment:
-      - CONFIG=./local/test.yaml
-      - ENV=./secrets/example.env

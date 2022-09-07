@@ -100,3 +100,15 @@ services:
       - ./predict/local:/local:ro
       - ./predict/model:/model:ro
       - ./predict/secrets:/secrets:ro
+
+  test:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: test
+
+  pre-commit:
+    build:
+      context: .
+      dockerfile: predict/dockerfile
+      target: pre-commit
