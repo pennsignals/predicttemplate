@@ -9,6 +9,6 @@ def test_service():
             "-c",
             "./predict/local/test.yaml",
             "-e",
-            "./predict/secrets.example.env",
+            "./predict/secrets/example.env",
         ],
     )
