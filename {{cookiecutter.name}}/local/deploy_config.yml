@@ -10,7 +10,7 @@ services:
       name: configuration.yaml
     image:
       name: {{ coockiecutter.name }}.predict
-      registry: ghcr.io/{{ coockiecutter.organization }}/{{ cookiecutter.name }}
+      registry: ghcr.io/{{ cookiecutter.organization }}/{{ cookiecutter.name }}
       tag: 0.0.0
     location: ./predict
     periodic:
