@@ -1,0 +1,33 @@
+organization: {{ cookiecutter.organization }}
+project: {{ cookiecutter.name }}
+
+services:
+  predict:
+    configuration:
+      local:
+        production: configuration.yaml
+        staging: configuration.yaml
+      name: configuration.yaml
+    image:
+      name: {{ coockiecutter.name }}.predict
+      registry: ghcr.io/{{ coockiecutter.organization }}/{{ cookiecutter.name }}
+      tag: 0.0.0
+    location: ./predict
+    periodic:
+      cron: 00 07 * * *
+    resources:
+      cpu: 4096
+      memory: 2048
+    secrets:
+      local:
+        production: production.env
+        staging: staging.env
+      name: secrets.env
+      type: env
+
+template:
+  configs:
+    location: ./local
+  secrets:
+    engine: kv
+    location: ./secrets
