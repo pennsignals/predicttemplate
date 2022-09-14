@@ -15,11 +15,16 @@ RUN \
     apt-get -qq upgrade --yes && \
     apt-get -qq install --yes --no-install-recommends \
         build-essential \
+        ca-certificates \
         freetds-dev \
         git \
+        libgomp1 \
+        libpq-dev \
         libssl-dev \
         libyaml-dev \
+        lz4 \
         tini \
+        wget \
     > /dev/null && \
     apt-get -qq clean && \
     rm -rf /var/lib/apt/lists/* && \

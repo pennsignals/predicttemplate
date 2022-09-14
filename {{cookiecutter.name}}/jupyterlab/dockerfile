@@ -18,7 +18,10 @@ RUN \
         ca-certificates \
         freetds-dev \
         git \
+        libgomp1 \
         libpq-dev \
+        libssl-dev \
+        libyaml-dev \
         lz4 \
         nano-tiny \
         tini \
