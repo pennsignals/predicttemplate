@@ -9,7 +9,7 @@ services:
         staging: configuration.yaml
       name: configuration.yaml
     image:
-      name: {{ coockiecutter.name }}.predict
+      name: {{ cookiecutter.name }}.predict
       registry: ghcr.io/{{ cookiecutter.organization }}/{{ cookiecutter.name }}
       tag: 0.0.0
     location: ./predict
