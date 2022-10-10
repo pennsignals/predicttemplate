@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from json import dumps
 
 from dateutil.parser import parse
-from dsdk import FlowsheetMixin, Interval, ModelMixin, PostgresPredictionMixin
+from dsdk import CompositeTask, FlowsheetMixin, Interval, ModelMixin, PostgresPredictionMixin
 from dsdk import Service as BaseService
 from dsdk import Task, configure_logger
 from pandas import DataFrame, merge
@@ -47,27 +47,6 @@ class Service(  # pylint: disable=too-many-ancestors
         )
         self.days = 1
         super().__init__(pipeline=pipeline, **kwargs)
-
-
-class CompositeTask(Task):  # pylint: disable=too-few-public-methods
-    """Composte Task."""
-
-    # TODO move into dsdk
-
-    SUBTASK_ON = dumps({"key": "subtask.on", "task": "%s"})
-    SUBTASK_END = dumps({"key": "subtask.end", "task": "%s"})
-
-    def __init__(self, pipeline):
-        """__init__."""
-        super().__init__()
-        self.pipeline = pipeline
-
-    def __call__(self, run, service):
-        """__call__."""
-        for task in self.pipeline:
-            logger.info(self.SUBTASK_ON, task.__class__.__name__)
-            task(run, service)
-            logger.info(self.SUBTASK_END, task.__class__.__name__)
 
 
 class Extract(CompositeTask):  # pylint: disable=too-few-public-methods

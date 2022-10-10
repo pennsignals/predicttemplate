@@ -97,11 +97,12 @@ parallel = true
 python-tag = "py39.py310"
 
 [tool.isort]
+default_section = "THIRDPARTY"
 include_trailing_comma = true
+known_first_party = ["{{cookiecutter.name}}"]
 line_length = 79
 multi_line_output = 3
-known_first_party = ["{{cookiecutter.name}}"]
-default_section = "THIRDPARTY"
+profile="black"
 
 [tool.mypy]
 follow_imports = "normal"
