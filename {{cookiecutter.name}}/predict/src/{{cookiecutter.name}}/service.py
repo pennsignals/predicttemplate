@@ -4,7 +4,13 @@ from collections.abc import Sequence
 from datetime import datetime, timedelta
 
 from dateutil.parser import parse
-from dsdk import CompositeTask, FlowsheetMixin, Interval, ModelMixin, PostgresPredictionMixin
+from dsdk import (
+    CompositeTask,
+    FlowsheetMixin,
+    Interval,
+    ModelMixin,
+    PostgresPredictionMixin,
+)
 from dsdk import Service as BaseService
 from dsdk import Task, configure_logger
 from pandas import DataFrame, merge
