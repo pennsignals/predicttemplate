@@ -79,7 +79,7 @@ Install python once per development machine if needed:
 
 Create a virtual env:
 
-    /opt/homebrew/opt/python@3.9/bin/python3.8 -m venv .venv
+    /opt/homebrew/opt/python@3.9/bin/python3.9 -m venv .venv
 
 Activate the virtual env:
 
