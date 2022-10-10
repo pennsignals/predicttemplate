@@ -113,16 +113,16 @@ show_error_codes = true
 flake8 = [ "--extend-ignore=F821,E501"]
 
 [tool.pylint.basic]
-good-names = '''at,df,i,logger'''
+good-names = "at,df,i,logger"
 
 [tool.pylint.master]
-ignore = '''docs'''
+ignore = "docs"
 
 [tool.pylint.message_control]
-disable = '''duplicate-code'''
+disable = "duplicate-code"
 
 [tool.pylint.miscellaneous]
-notes = '''FIXME,XXX'''
+notes = "FIXME,XXX"
 
 [tool.pylint.similarities]
 min-similarity-lines = 4

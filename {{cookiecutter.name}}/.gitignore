@@ -55,6 +55,9 @@ output/*/index.html
 # Sphinx
 docs/_build
 
+# PyCharm
+.idea/
+
 .DS_Store
 *~
 .*.sw[po]
