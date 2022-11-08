@@ -1,5 +1,4 @@
-{% raw %}
-job "[[ .project ]]_predict" {
+job "{{ cookiecutter.name }}_predict" {
   datacenters = ["dc1"]
 
   meta {
@@ -9,14 +8,14 @@ job "[[ .project ]]_predict" {
   type="batch"
 
   periodic = {
-    cron             = "[[ .services.predict.periodic.cron ]]"
+    cron             = "{{ cookiecutter.predict.cron }}"
     prohibit_overlap = true
     time_zone        = "America/New_York"
   }
 
   group "default" {
     vault {
-      policies = ["[[ .project ]]"]
+      policies = ["{{ cookiecutter.name }}"]
     }
 
     restart {
@@ -28,10 +27,10 @@ job "[[ .project ]]_predict" {
 
     task "predict" {
       config = {
-        image = "[[ .services.predict.image.registry ]]/[[ .services.predict.image.name ]]:[[ or (.TAG) .services.predict.image.version ]]"
+        image = "{{ cookiecutter.registry }}/[[ .services.predict.image.name ]]:[[ or (.TAG) .services.predict.image.version ]]"
 
         volumes = [
-          "/share/models/[[ .project ]]:/model:ro"
+          "/share/models/{{ cookiecutter.name }}:/model:ro"
         ]
       }
 
@@ -43,13 +42,13 @@ job "[[ .project ]]_predict" {
       }
 
       resources {
-        cpu    = [[ .services.predict.resources.cpu ]]
-        memory = [[ .services.predict.resources.memory ]]
+        cpu    = {{ cookiecutter.predict.cpu }}
+        memory = {{ cookiecutter.predict.memory }}
       }
 
       template {
         data = <<EOH
-{{ key "[[ .organization ]]/[[ .project ]]/predict/[[ .services.predict.configuration.name ]]" }}
+{{ key "{{ cookiecutter.organization }}/{{ cookiecutter.name }}/predict/configuration.yaml" }}
 EOH
         destination = "${NOMAD_TASK_DIR}/configuration.yaml"
       }
@@ -57,12 +56,12 @@ EOH
       # *templating and vault policy* require the additional '/data' and '.data' seen here:
       template {
         data = <<EOH
-{{ with secret "kv/data/[[ .organization ]]/[[ .project ]]/predict/[[ .services.predict.secrets.name ]]" }}
-{{ range $k, $v := .Data.data }}{{ $k }}={{ $v }}
-{{ end }}{{ end }}
+{{ '{{' }} with secret "kv/data/{{ cookiecutter.organization }}/{{ cookiecutter.name }}/predict/secrets.env" {{ '}}' }}
+{{ '{{' }} range $k, $v := .Data.data {{ '}}{{' }} $k {{ '}}={{' }} $v {{ '}}' }}
+{{ '{{' }} end {{ '}}{{' }} end {{ '}}' }}
 EOH
         destination = "${NOMAD_SECRETS_DIR}/secrets.env"
       }
     }
   }
-}{% endraw %}
+}
