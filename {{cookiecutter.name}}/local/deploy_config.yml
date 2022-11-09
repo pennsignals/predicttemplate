@@ -14,10 +14,10 @@ services:
       tag: 0.0.0
     location: ./predict
     periodic:
-      cron: 00 07 * * *
+      cron: {{ cookiecutter.predict.cron }}
     resources:
-      cpu: 4096
-      memory: 2048
+      cpu: {{ cookiecutter.predict.cpu }}
+      memory: {{ cookiecutter.predict.memory }}
     secrets:
       local:
         production: production.env
