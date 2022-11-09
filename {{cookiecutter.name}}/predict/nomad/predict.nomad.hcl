@@ -48,7 +48,7 @@ job "{{ cookiecutter.name }}_predict" {
 
       template {
         data = <<EOH
-{{ key "{{ cookiecutter.organization }}/{{ cookiecutter.name }}/predict/configuration.yaml" }}
+{{ '{{' }} key "{{ cookiecutter.organization }}/{{ cookiecutter.name }}/predict/configuration.yaml" {{ '}}' }}
 EOH
         destination = "${NOMAD_TASK_DIR}/configuration.yaml"
       }
