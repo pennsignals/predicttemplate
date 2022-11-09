@@ -44,7 +44,7 @@ job "{{ cookiecutter.name }}_backfill" {
       }
 
       resources {
-        cpu    = {{ cookiedutter.predict.cpu }}
+        cpu    = {{ cookiecutter.predict.cpu }}
         memory = {{ cookiecutter.predict.memory }}
       }
 
