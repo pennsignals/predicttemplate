@@ -3,7 +3,7 @@
     "name": "example",
     "organization": "organization",
     "repo": "github.com/{{ cookiecutter.organization }}/{{ cookiecutter.name }}",
-    "registry": "ghcr.io/{{ cookiecutter.organization }}/{{ cookiecutter.name }}", 
+    "registry": "ghcr.io/{{ cookiecutter.organization }}/{{ cookiecutter.name }}",
     "predict": {
       "cron": "00 07 * * *",
       "cpu": 4096,
