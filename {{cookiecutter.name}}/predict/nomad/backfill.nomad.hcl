@@ -1,10 +1,6 @@
 job "{{ cookiecutter.name }}_backfill" {
   datacenters = ["dc1"]
 
-  meta {
-    NAMESPACE = "[[ .deploy ]]"
-  }
-
   type="batch"
 
   periodic = {

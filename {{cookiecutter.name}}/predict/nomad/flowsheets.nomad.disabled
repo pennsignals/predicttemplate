@@ -1,10 +1,6 @@
 job "{{ cookiecutter.name }}_flowsheets" {
   datacenters = ["dc1"]
 
-  meta {
-    NAMESPACE = "[[ .deploy ]]"
-  }
-
   type="service"
 
   group "default" {
