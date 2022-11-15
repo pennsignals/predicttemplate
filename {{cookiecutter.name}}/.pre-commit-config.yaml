@@ -79,6 +79,7 @@ repos:
       - id: nbqa-pyupgrade
         args: [--py39-plus]
       - id: nbqa-isort
+        args: [--float-to-top]
       - id: nbqa-black
         args: [--target-version=py39]
       - id: nbqa-flake8
