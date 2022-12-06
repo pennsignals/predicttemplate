@@ -83,6 +83,7 @@ repos:
       - id: nbqa-black
         args: [--target-version=py39]
       - id: nbqa-flake8
+        args: ["--extend-ignore=F401,E501"]
 
   - repo: local
     hooks:

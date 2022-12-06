@@ -2,6 +2,7 @@
 
 from collections.abc import Sequence
 from datetime import datetime, timedelta
+from typing import Any, Generator
 
 from dateutil.parser import parse
 from dsdk import (
@@ -52,6 +53,11 @@ class Service(  # pylint: disable=too-many-ancestors
         )
         self.days = 1
         super().__init__(pipeline=pipeline, **kwargs)
+
+    def publish(self) -> Generator[Any, None, None]:
+        """Publish."""
+        yield from self.flowsheets.publish(self.postgres)
+
 
 
 class Extract(CompositeTask):  # pylint: disable=too-few-public-methods
