@@ -1,8 +1,8 @@
 """Service."""
 
-from collections.abc import Sequence
+from collections.abc import Generator, Sequence
 from datetime import datetime, timedelta
-from typing import Any, Generator
+from typing import Any
 
 from dateutil.parser import parse
 from dsdk import (
