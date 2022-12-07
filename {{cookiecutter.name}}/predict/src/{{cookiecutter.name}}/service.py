@@ -59,7 +59,6 @@ class Service(  # pylint: disable=too-many-ancestors
         yield from self.flowsheets.publish(self.postgres)
 
 
-
 class Extract(CompositeTask):  # pylint: disable=too-few-public-methods
     """Extract."""
 
