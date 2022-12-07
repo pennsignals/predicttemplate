@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-python3.9 -m venv .venv
+brew install python3.9
+/opt/homebrew/bin/python3.9 -m venv .venv
 . .venv/bin/activate
 pip install -U pip setuptools wheel
 pip install -e ".[dev]"

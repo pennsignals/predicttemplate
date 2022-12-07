@@ -73,22 +73,13 @@ Files:
 
 ### Brew python venv:
 
-Install python once per development machine if needed:
+Brew install python, create venv, activate venv, install the {{coockiecuter.name}} module with dev dependencies in editable mode, install pre-commit, and run pre-commit:
 
-    brew install python@3.9
+    ./scripts/venv.sh
 
-Create a virtual env:
-
-    /opt/homebrew/opt/python@3.9/bin/python3.9 -m venv .venv
-
-Activate the virtual env:
+Activate venv:
 
     . .venv/bin/activate
-
-Install module and pre-commit once per project:
-
-    pip install -e ".[dev]"
-    pre-commit install
 
 Development Session:
 
@@ -99,20 +90,20 @@ Development Session:
     git commit -m '...'
     ...
 
-Deactivate:
+Deactivate venv:
 
     deactivate
 
 ### Brew conda venv:
 
-This script will create the conda env and install pre-commit and the {{cookiecutter.name}} package
+This script will create the conda env and install pre-commit and the {{cookiecutter.name}} module
 
     ./scripts/create_conda.sh
     conda activate {{cookiecutter.name}}
     ...
     conda deactivate
 
-To run the tests in a continuous TDD loop, where the tests will run whenever there are changes to the code:
+Watch for file changes to automatically run tests:
 
     ./scripts/tdd.sh
 
@@ -125,7 +116,7 @@ Development Session:
     git commit -m '...'
     ...
 
-Deactivate:
+Deactivate conda venv:
 
     conda deactivate
 
