@@ -73,7 +73,7 @@ Files:
 
 ### Brew python venv:
 
-Brew install python, create venv, activate venv, install the {{coockiecuter.name}} module with dev dependencies in editable mode, install pre-commit, and run pre-commit:
+Brew install python, create venv, activate venv, install the {{cookiecutter.name}} module with dev dependencies in editable mode, install pre-commit, and run pre-commit:
 
     ./scripts/venv.sh
 
