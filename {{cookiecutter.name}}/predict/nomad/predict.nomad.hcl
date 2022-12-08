@@ -4,7 +4,7 @@ job "{{ cookiecutter.name }}_predict" {
   type="batch"
 
   periodic = {
-    cron             = "{{ cookiecutter.predict.cron }}"
+    cron             = "{{ cookiecutter.predict_cron }}"
     prohibit_overlap = true
     time_zone        = "America/New_York"
   }
@@ -38,8 +38,8 @@ job "{{ cookiecutter.name }}_predict" {
       }
 
       resources {
-        cpu    = {{ cookiecutter.predict.cpu }}
-        memory = {{ cookiecutter.predict.memory }}
+        cpu    = {{ cookiecutter.predict_cpu }}
+        memory = {{ cookiecutter.predict_memory }}
       }
 
       template {

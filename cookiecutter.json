@@ -4,9 +4,7 @@
     "organization": "organization",
     "repo": "github.com/{{ cookiecutter.organization }}/{{ cookiecutter.name }}",
     "registry": "ghcr.io/{{ cookiecutter.organization }}/{{ cookiecutter.name }}",
-    "predict": {
-      "cron": "00 07 * * *",
-      "cpu": 4096,
-      "memory": 2048
-    }
+    "predict_cron": "00 07 * * *",
+    "predict_cpu": 4096,
+    "predict_memory": 2048
 }
