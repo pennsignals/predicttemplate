@@ -9,7 +9,7 @@ begin
     end if;
 
     create table cohorts (
-        id bitint primary key generated always as identity,
+        id bigint primary key generated always as identity,
         run_id int not null,
         subject_id int not null,
         description varchar not null,
