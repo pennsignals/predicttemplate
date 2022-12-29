@@ -1,8 +1,7 @@
 channels:
   - conda-forge
-  - main # needed pymssql
   # pyproject.toml is authoritative for the python module
-  # pin any key dependencies to match pyproject.toml
+  # pin any key dependencies here to match pyproject.toml
 dependencies:
   - python=3.9
   - altair
@@ -24,6 +23,7 @@ dependencies:
   - jupyterlab-git
   - jupyterlab-latex
   - jupyterlab-pullrequests
+  - jupytext
   - libpq
   - lz4
   - matplotlib
@@ -32,9 +32,9 @@ dependencies:
   - numexpr
   - nodejs
   - pandas
-  - pip>=22.2.2
+  - pip>=22.3.1
   - pip:
-      - dsdk>=1.7.2
+      - dsdk>=1.9.1
       - jupyterlab_skip_traceback
       - sh
       - vega
@@ -44,7 +44,6 @@ dependencies:
   - python-dateutil
   - pyyaml
   - pyzmq
-  - retrolab
   - scipy
   - scikit-learn
   - seaborn

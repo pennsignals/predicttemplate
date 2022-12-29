@@ -63,9 +63,26 @@ FROM forge as jupyterlab
 LABEL name="jupyterlab"
 RUN \
     mkdir -p ~/.jupyter && \
-    echo "c.ServerApp.token = ''" > ~/.jupyter/jupyter_notebook_config.py && \
+    echo $'{\n\
+    "ServerApp: {\n\
+        "token": "",\n\
+        "password": ""\n\
+    }\n\
+}' > ~/.jupyter/jupyter_server_config.json && \
+    mkdir -p ~/.jupyter/labconfig && \
+    echo $'{\n\
+    "defaultViewers": {\n\
+        "markdown": "Jupytext Notebook",\n\
+        "myst": "Jupytext Notebook",\n\
+        "r-markdown": "Jupytext Notebook",\n\
+        "quarto": "Jupytext Notebook",\n\
+        "julia": "Jupytext Notebook",\n\
+        "python": "Jupytext Notebook",\n\
+        "r": "Jupytext Notebook"\n\
+    }\n\
+}' > ~/.jupyter/labconfig/default_setting_overrides.json && \
     mkdir -p ~/.jupyter/custom && \
     echo -e ".container { width:99% !important; }\nelement.style { max-width: 99% !important; }" > ~/.jupyter/custom/custom.css && \
     mkdir -p ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
     echo '{ "theme": "JupyterLab Dark" }' > ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
-CMD jupyter retro --ip=0.0.0.0 --allow-root --no-browser --notebook-dir /tmp
+CMD jupyter lab --ip=0.0.0.0 --allow-root --no-browser --notebook-dir /tmp

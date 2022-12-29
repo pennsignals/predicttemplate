@@ -1,3 +1,6 @@
 *
 !.gitignore
 !*.no_phi.ipynb
+!*.py
+!no.phi
+!phi
