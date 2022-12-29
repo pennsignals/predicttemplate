@@ -1,5 +1,6 @@
 channels:
   - conda-forge
+  - main  # pymssql
   # pyproject.toml is authoritative for the python module
   # pin any key dependencies here to match pyproject.toml
 dependencies:
