@@ -63,12 +63,6 @@ FROM forge as jupyterlab
 LABEL name="jupyterlab"
 RUN \
     mkdir -p ~/.jupyter && \
-    echo $'{\n\
-    "ServerApp: {\n\
-        "token": "",\n\
-        "password": ""\n\
-    }\n\
-}' > ~/.jupyter/jupyter_server_config.json && \
     mkdir -p ~/.jupyter/labconfig && \
     echo $'{\n\
     "defaultViewers": {\n\
@@ -85,4 +79,4 @@ RUN \
     echo -e ".container { width:99% !important; }\nelement.style { max-width: 99% !important; }" > ~/.jupyter/custom/custom.css && \
     mkdir -p ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension && \
     echo '{ "theme": "JupyterLab Dark" }' > ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
-CMD jupyter lab --ip=0.0.0.0 --allow-root --no-browser --notebook-dir /tmp
+CMD jupyter lab --ip=0.0.0.0 --allow-root --no-browser --notebook-dir --ServerApp.terminado_settings="shell_command='/bin/zsh'" --ServerApp.token="" /tmp
