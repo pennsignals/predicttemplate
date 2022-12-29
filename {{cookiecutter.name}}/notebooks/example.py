@@ -33,9 +33,9 @@ try:
     from diagnosisml import Service
 
     _ = Service
-except ImportError:
+except ImportError as error:
     # !pip install -e ".[dev]"
-    raise RuntimeError("Module has been installed, please restart the kernel")
+    raise RuntimeError("Module has been installed, please restart the kernel") from error
 
 # ## 2. Manage Configuration & Environment
 #
@@ -132,6 +132,7 @@ with open(config_file, "w", encoding="utf-8") as fout:
 
 
 class Cfg(YamlMapping):
+    """Cfg."""
 
     YAML = "!cfg"
 
@@ -143,6 +144,7 @@ class Cfg(YamlMapping):
         postgres: Postgres,
         stages: list,
     ):
+        """__init__."""
         self.elixhauser = elixhauser
         self.mssql = mssql
         self.postgres = postgres
@@ -201,9 +203,9 @@ keys = {
 }
 
 parameters = {
-    "dry_run": 0,
     "cohort_begin": "2021-05-05",
     "cohort_end": "2021-05-06",
+    "dry_run": 0,
 }
 # -
 

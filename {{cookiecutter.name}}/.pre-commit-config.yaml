@@ -66,25 +66,6 @@ repos:
         language: system
         types: [python]
 
-  - repo: https://github.com/kynan/nbstripout
-    rev: 0.6.1
-    hooks:
-      - id: nbstripout
-        args:
-          - "--extra-keys=cell.metadata.pycharm"
-
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.5.3
-    hooks:
-      - id: nbqa-pyupgrade
-        args: [--py39-plus]
-      - id: nbqa-isort
-        args: [--float-to-top]
-      - id: nbqa-black
-        args: [--target-version=py39]
-      - id: nbqa-flake8
-        args: ["--extend-ignore=F401,E501"]
-
   - repo: local
     hooks:
       - id: pytest
