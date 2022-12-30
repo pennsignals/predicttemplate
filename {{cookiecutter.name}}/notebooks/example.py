@@ -11,6 +11,8 @@
 #       jupytext_version: 1.14.4
 # ---
 
+"""Example."""
+
 # +
 from __future__ import annotations
 
