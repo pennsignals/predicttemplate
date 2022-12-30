@@ -1,4 +1,4 @@
-ARG ROOT_CONTAINER=timescale/timescaledb:2.9.1-pg14-oss
+ARG ROOT_CONTAINER=timescale/timescaledb:2.9.1-pg13-oss
 ARG PGTAP_VERSION=1.2.0
 
 FROM ${ROOT_CONTAINER} as build

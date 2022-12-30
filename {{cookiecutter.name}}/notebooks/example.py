@@ -30,12 +30,14 @@ from psycopg2.errors import UndefinedTable
 
 chdir("/tmp")
 try:
-    from diagnosisml import Service
+    from {{cookiecutter.name}} import Service
 
     _ = Service
 except ImportError as error:
     # !pip install -e ".[dev]"
-    raise RuntimeError("Module has been installed, please restart the kernel") from error
+    raise RuntimeError(
+        "Module has been installed, please restart the kernel"
+    ) from error
 
 # ## 2. Manage Configuration & Environment
 #

@@ -25,7 +25,6 @@ dependencies:
   - jupyterlab-latex
   - jupyterlab-pullrequests
   - jupytext
-  - libpq
   - lz4
   - matplotlib
   - nb_conda_kernels
@@ -37,10 +36,10 @@ dependencies:
   - pip:
       - dsdk>=1.9.1
       - jupyterlab_skip_traceback
+      - psycopg2-binary==2.8.6  # broken libpq for arm64 and new lipq for pg14
       - sh
       - vega
       - vega_datasets
-  - psycopg2
   - pymssql
   - python-dateutil
   - pyyaml
@@ -49,5 +48,5 @@ dependencies:
   - scikit-learn
   - seaborn
   - pytables
-  - tornado==6.1 # jupyterlab errors
+  - tornado==6.1  # jupyterlab errors
   - wheel
