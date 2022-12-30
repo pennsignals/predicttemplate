@@ -1,6 +1,6 @@
 channels:
   - conda-forge
-  - main  # pymssql
+  - main # pymssql
   # pyproject.toml is authoritative for the python module
   # pin any key dependencies here to match pyproject.toml
 dependencies:
@@ -36,7 +36,7 @@ dependencies:
   - pip:
       - dsdk>=1.9.1
       - jupyterlab_skip_traceback
-      - psycopg2-binary==2.8.6  # broken libpq for arm64 and new lipq for pg14
+      - psycopg2-binary==2.8.6 # broken libpq pg14 and arm64
       - sh
       - vega
       - vega_datasets
@@ -48,5 +48,5 @@ dependencies:
   - scikit-learn
   - seaborn
   - pytables
-  - tornado==6.1  # jupyterlab errors
+  - tornado==6.1 # jupyterlab errors
   - wheel
