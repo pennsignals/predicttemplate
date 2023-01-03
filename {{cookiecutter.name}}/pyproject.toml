@@ -109,17 +109,17 @@ follow_imports = "normal"
 ignore_missing_imports = false
 show_error_codes = true
 
-[tool.nbqa.addopts]
-flake8 = ["--extend-ignore=F821,E501"]
+[tool.jupytext]
+formats = "notebooks//py:light"
+cell_meta_data_filter = "-all"
+notebook_metadata_filer = "-all,jupytext,pylint"
 
 [tool.pylint.basic]
 good-names = "at,df,i,logger"
 
-[tool.pylint.master]
-ignore = "docs"
-
 [tool.pylint.message_control]
-disable = "duplicate-code"
+disable = "duplicate-code,line-too-long"
+constant-naming-style = "any"
 
 [tool.pylint.miscellaneous]
 notes = "FIXME,XXX"
