@@ -119,7 +119,7 @@ good-names = "at,df,i,logger"
 
 [tool.pylint.message_control]
 disable = "duplicate-code,line-too-long"
-constant-naming-style = "any"
+const-naming-style = "any"
 
 [tool.pylint.miscellaneous]
 notes = "FIXME,XXX"
