@@ -118,7 +118,7 @@ notebook_metadata_filer = "-all,jupytext,pylint"
 good-names = "at,df,i,logger"
 
 [tool.pylint.message_control]
-disable = "duplicate-code"
+disable = "duplicate-code,line-too-long"
 
 [tool.pylint.miscellaneous]
 notes = "FIXME,XXX"
