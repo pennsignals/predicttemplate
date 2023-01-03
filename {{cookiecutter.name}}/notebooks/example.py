@@ -1,5 +1,9 @@
 # ---
+# pylint: disable=invalid-name
+# pylint: disable=line-too-long
+# pylint: disable=no-name-in-module
 # pylint: disable=pointless-statement
+# pylint: disable=redefined-outer-name
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
