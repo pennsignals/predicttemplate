@@ -12,15 +12,15 @@ channels:
 #   between this file and setup.py
 dependencies:
     - python>=3.9
-    - psycopg2-binary>=2.8.6
+    - pip
     - pymssql>=2.2.3
 EOF
-tr '\n' , < setup.py | grep -o "INSTALL_REQUIRES =.*TEST_REQUIRES =" | tr , '\n' | egrep '^    "' | awk -F\" '{print "    - "$2}' | \
-    sed 's/==/=/g' | \
-    sed 's/pip.*$/pip/g' | \
-    sed 's/setuptools>.*$/setuptools/g' | \
-    sed 's/setuptools_scm[toml]>.*$/setuptools_scm[toml]/g' >> test_environment.yml
+tr '\n' , < pyproject.toml | grep -o "dependencies = .*predict =" | tr , '\n' | egrep -v "psycopg2-binary|dsdk|flake8-commas|flake8-sorted-keys|types-pkg-resources" | egrep '^    "' | awk -F\" '{print "    - "$2}' | sed 's/==/=/g' >> test_environment.yml
+cat << EOF >> test_environment.yml
+    - pip:
+EOF
+tr '\n' , < pyproject.toml | grep -o "dependencies = .*predict =" | tr , '\n' | egrep "dsdk|flake8-commas|flake8-sorted-keys|types-pkg-resources" | egrep '^    "' | awk -F\" '{print "      - "$2}' >> test_environment.yml
 conda env create -f test_environment.yml && \
 conda activate {{cookiecutter.name}} && \
-pip install pre-commit &&  pre-commit install && pip install -e ".[all]"
+pip install pre-commit && pre-commit install && pip install -e ".[dev]"
 rm test_environment.yml
