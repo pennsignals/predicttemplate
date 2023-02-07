@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -14,7 +14,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: http://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: python-check-blanket-noqa
       - id: python-check-blanket-type-ignore
@@ -33,11 +33,16 @@ repos:
     rev: 1.5.3
     hooks:
       - id: nbqa-pyupgrade
+        additional_dependencies: [pyupgrade==3.3.1]
         args: [--py39-plus]
       - id: nbqa-isort
+        additional_dependencies: [isort==5.12.0]
+        args: [--float-to-top]
       - id: nbqa-black
+        additional_dependencies: [black==23.1.0]
         args: [--target-version=py39]
       - id: nbqa-flake8
+        additional_dependencies: [flake8==6.0.0]
 
 default_language_version:
   python: python3
