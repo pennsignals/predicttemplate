@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 WORKDIR /tmp
 ENV DEBIAN_FRONTEND noninteractivate
-ENV FREETDS /etc/freetds
+ENV FREETDSCONF /etc/freetds/freetds.conf
 ENV PATH /root/.local/bin:$PATH
 COPY freetds.conf /etc/freetds/
 RUN \
