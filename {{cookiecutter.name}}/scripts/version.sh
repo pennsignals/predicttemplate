@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+{% raw %}#!/usr/bin/env bash
 set -euxo pipefail
 
 while [ $# -gt 0 ]; do
@@ -28,4 +28,4 @@ if [[ ${ ref } == refs/tags/* ]]; then
   TAG_NAME=$(echo "${ ref }" | sed -e 's,.*/\(.*\),\1,')
   # Strip "v" prefix from tag name
   VERSION=$(echo "${ TAG_NAME }" | sed -e 's/^v//')
-fi
+fi{% endraw %}
