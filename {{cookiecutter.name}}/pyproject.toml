@@ -28,6 +28,7 @@ dependencies = [
     "python-dateutil",
     "scikit-learn>=1.1.2",
     "scipy>=1.7.3",
+    "urllib3<2.0",  # github.com/kevin1024/vcrpy/issues/688
 ]
 description = "{{cookiecutter.description}}"
 dynamic = ["version"]

@@ -20,6 +20,7 @@ RUN \
         freetds-dev \
         git \
         libgomp1 \
+        libkrb5-dev \
         libpq-dev \
         libssl-dev \
         libyaml-dev \
