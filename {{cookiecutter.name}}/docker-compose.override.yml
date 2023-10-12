@@ -1,5 +1,12 @@
 version: "3.8"
 
+x-hashicorp-config: &hashicorp-config
+  CONSUL_ADDR: "${CONSUL_ADDR}"
+  NOMAD_ADDR: "${NOMAD_ADDR}"
+  VAULT_ADDR: "${VAULT_ADDR}"
+  VAULT_TOKEN: "${VAULT_TOKEN}"
+  VERSION: "${VERSION}"
+
 volumes:
   postgres-data:
 

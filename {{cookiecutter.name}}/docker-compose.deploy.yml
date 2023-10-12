@@ -9,21 +9,12 @@ x-hashicorp-config: &hashicorp-config
   VERSION: "${VERSION}"
 
 services:
-  # render all nomad jobs and output them to ./nomad/
-  render:
-    environment:
-      <<: *hashicorp-config
-      DEPLOY: "FALSE"
-    image: ghcr.io/pennsignals/deploy_action/deploy_action.deploy:0.1.3
-    volumes:
-      - ./:/source
-    working_dir: /source
-
-  # render all nomad jobs and deploy them
+  # deploy all nomad jobs
   deploy:
     environment:
       <<: *hashicorp-config
-    image: ghcr.io/pennsignals/deploy_action/deploy_action.deploy:0.1.3
+    image: debian:10.6-slim
+    entrypoint: [ "/scripts/deploy.sh" ]
     volumes:
       - ./:/source
     working_dir: /source
