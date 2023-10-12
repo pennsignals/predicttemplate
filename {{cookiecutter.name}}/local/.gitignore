@@ -1,5 +1,7 @@
 *
 !.gitignore
 !example.env
-!config.env
+!github.env
+!staging.env
+!production.env
 !deploy_config.yml
