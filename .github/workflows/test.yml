@@ -4,6 +4,7 @@ on:
   push:
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   test:
@@ -14,10 +15,10 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: setup_python${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           check-latest: true

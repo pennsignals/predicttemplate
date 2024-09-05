@@ -1,4 +1,5 @@
 """Test Service."""
+
 from {{cookiecutter.name}} import Service
 
 

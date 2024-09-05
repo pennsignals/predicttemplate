@@ -1,7 +1,7 @@
 """Service."""
 
 from collections.abc import Generator, Sequence
-from datetime import datetime, timedelta
+from datetime import timedelta
 from importlib.metadata import version
 from pathlib import Path
 from typing import Any
