@@ -2,6 +2,8 @@
 
 from collections.abc import Generator, Sequence
 from datetime import datetime, timedelta
+from importlib.metadata import version
+from pathlib import Path
 from typing import Any
 
 from dateutil.parser import parse
@@ -15,15 +17,10 @@ from dsdk import (
 from dsdk import Service as BaseService
 from dsdk import Task, configure_logger
 from pandas import DataFrame, merge
-from pkg_resources import DistributionNotFound, get_distribution
 
 from .model import Model
 
-try:
-    __version__ = get_distribution("{{cookiecutter.name}}").version
-except DistributionNotFound:
-    __version__ = "0.0.0.dev+dirty." + str(datetime.utcnow().timestamp())
-
+__version__ = version(Path(__file__).resolve().parent.name)
 
 logger = configure_logger(__name__)
 
@@ -41,7 +38,7 @@ class Service(  # pylint: disable=too-many-ancestors
 
     @classmethod
     def yaml_types(cls) -> None:
-        """As yaml type."""
+        """Yaml type."""
         super().yaml_types()
         Model.as_yaml_type()
 

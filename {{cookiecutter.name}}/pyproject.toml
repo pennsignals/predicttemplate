@@ -18,17 +18,20 @@ classifiers = [
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Utilities",
 ]
 dependencies = [
-    "dsdk>=1.9.1",
+    "dsdk>=2.2.2",
     "numpy>=1.23.2",
     "pandas>=1.4.3",
     "python-dateutil",
     "scikit-learn>=1.1.2",
     "scipy>=1.7.3",
-    "urllib3<2.0",  # github.com/kevin1024/vcrpy/issues/688
+    "urllib3<2; python_version < '3.10'",
+    "urllib3>=2; python_version >= '3.10'",
 ]
 description = "{{cookiecutter.description}}"
 dynamic = ["version"]
@@ -59,7 +62,6 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-runner",
-    "types-pkg-resources",
     "types-python-dateutil",
     "types-pyyaml",
 ]
@@ -79,7 +81,7 @@ Tracker = "https://{{cookiecutter.repo}}/issues"
 
 [tool.black]
 line-length = 79
-target-version = ["py39"]
+target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -95,10 +97,11 @@ branch = true
 parallel = true
 
 [tool.distutils.bdist_wheel]
-python-tag = "py39.py310"
+python-tag = "py39.py310.py311.py312"
 
 [tool.isort]
 default_section = "THIRDPARTY"
+float_to_top = true
 include_trailing_comma = true
 known_first_party = ["{{cookiecutter.name}}"]
 line_length = 79

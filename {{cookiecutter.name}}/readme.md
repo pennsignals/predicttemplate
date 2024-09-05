@@ -77,7 +77,7 @@ Brew install python, create venv, activate venv, install the {{cookiecutter.name
 
     ./scripts/venv.sh
 
-Activate venv:
+Activate the virtual environment:
 
     . .venv/bin/activate
 
@@ -90,13 +90,13 @@ Development Session:
     git commit -m '...'
     ...
 
-Deactivate venv:
+Deactivate the virtual environment:
 
     deactivate
 
 ### Brew conda venv:
 
-This script will create the conda env and install pre-commit and the {{cookiecutter.name}} module
+This script will create the conda virtual environment, install pre-commit, and install the {{cookiecutter.name}} module
 
     ./scripts/create_conda.sh
     conda activate {{cookiecutter.name}}
@@ -116,7 +116,7 @@ Development Session:
     git commit -m '...'
     ...
 
-Deactivate conda venv:
+Deactivate the conda virtual environment:
 
     conda deactivate
 

@@ -3,7 +3,7 @@ ARG ROOT_CONTAINER=python:${PYTHON_VERSION}-slim-bullseye
 ARG IFLAGS="--quiet --no-cache-dir --user"
 
 
-FROM ${ROOT_CONTAINER} as binaries
+FROM ${ROOT_CONTAINER} AS binaries
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 WORKDIR /tmp
@@ -34,28 +34,28 @@ RUN \
 ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 
 
-FROM binaries as source
+FROM binaries AS source
 COPY . .
 
 
-FROM source as test
+FROM source AS test
 ARG IFLAGS
 RUN \
     pip install ${IFLAGS} ".[dev]"
 CMD pytest
 
 
-FROM test as pre-commit
+FROM test AS pre-commit
 CMD pre-commit run --all-files
 
 
-FROM source as build
+FROM source AS build
 ARG IFLAGS
 RUN \
     pip install ${IFLAGS} "."
 
 
-FROM binaries as predict
+FROM binaries AS predict
 LABEL name="predict"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
@@ -71,7 +71,7 @@ ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["predict"]
 
 
-FROM test as predict.test
+FROM test AS predict.test
 LABEL name="predict.test"
 ARG IFLAGS
 WORKDIR /tmp
