@@ -4,7 +4,7 @@ ARG MINIFORGE_VERSION=4.13.0-1
 ARG ROOT_CONTAINER=debian:bullseye-slim
 
 
-FROM ${ROOT_CONTAINER} as binaries
+FROM ${ROOT_CONTAINER} AS binaries
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 WORKDIR /tmp
@@ -34,7 +34,7 @@ ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD /bin/bash
 
 
-FROM binaries as forge
+FROM binaries AS forge
 ARG CONDA
 ARG MINIFORGE_NAME
 ARG MINIFORGE_VERSION
@@ -59,7 +59,7 @@ RUN \
     echo ". ${CONDA_DIR}/etc/profile.d/conda.sh && ${CONDA} activate base" >> ~/.bashrc
 
 
-FROM forge as jupyterlab
+FROM forge AS jupyterlab
 LABEL name="jupyterlab"
 RUN \
     mkdir -p ~/.jupyter && \
