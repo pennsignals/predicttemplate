@@ -1,5 +1,3 @@
-version: "3.8"
-
 volumes:
   postgres-data:
 
@@ -79,9 +77,9 @@ services:
       - ./postgres/sql/patchdb.d:/docker-entrypoint-patchdb.d
 
   # docker-compose run predict predict
-  # docker-compose run predict publish.flowsheets
-  # docker-compose run predict create.gold
-  # docker-compose run predict validate.gold
+  # docker-compose run predict publish-flowsheets
+  # docker-compose run predict create-gold
+  # docker-compose run predict validate-gold
   predict:
     depends_on:
       - postgres

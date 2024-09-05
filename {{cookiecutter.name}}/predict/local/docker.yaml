@@ -1,5 +1,5 @@
 !{{cookiecutter.name}}
-as_of: 2019-09-18 17:19:23.873398+00
+as_of: 2024-01-01 00:00:00.000000+00
 gold: ./predict/gold/gold.pkl
 model: !model ./predict/model/1.0.0.pkl
 postgres: !postgres

@@ -17,7 +17,7 @@ jobs:
 
       - name: publish
         id: publish
-        uses: pennsignals/publish_docker-compose@v0.1.1
+        uses: pennsignals/publish_docker-compose@v0.2.7
         with:
           docker_compose: "docker-compose.yml"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Deploy pre-release to staging
       - name: staging_consul
@@ -59,7 +59,7 @@ jobs:
       # add artifacts to release
       - name: release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: nomad.tar.gz
         env:
@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Deploy main release to Production
       - name: production_consul
@@ -94,7 +94,7 @@ jobs:
 
       # Upload rendered nomad jobs as artifacts
       - name: upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nomad
           path: nomad.tar.gz
@@ -102,7 +102,7 @@ jobs:
       # add artifacts to release
       - name: release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: nomad.tar.gz
         env:

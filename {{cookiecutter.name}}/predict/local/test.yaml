@@ -1,5 +1,5 @@
 !{{cookiecutter.name}}
-as_of: 2019-09-18 17:19:23.873398+00
+as_of: 2024-01-01 00:00:00.000000+00
 flowsheets: !flowsheets
   client_id: ${EPIC_CLIENT_ID}
   cookie: ${EPIC_COOKIE}
@@ -8,7 +8,7 @@ flowsheets: !flowsheets
       flowsheet_id: ${EPIC_FLOWSHEET_ID}
       flowsheet_template_id: ${EPIC_FLOWSHEET_TEMPLATE_ID}
   password: ${EPIC_PASSWORD}
-  url: ${EPIC_URL}api/epic/2011/clinical/patient/addflowsheetvalue/flowsheetvalue
+  url: ${EPIC_URL}/api/epic/2011/clinical/patient/addflowsheetvalue/flowsheetvalue
   username: ${EPIC_USERNAME}
 gold: ./predict/gold/gold.pkl
 model: null
