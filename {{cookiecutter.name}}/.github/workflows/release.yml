@@ -38,7 +38,7 @@ jobs:
         run: |
           ./scripts/consul.sh \
             --src ./predict/local/configuration.yaml \
-            --dst pennsignals/palliativeconnect/predict/configuration.yaml
+            --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
 
         # Deploy jobs
       - id: nomad
@@ -78,7 +78,7 @@ jobs:
         run: |
           ./scripts/consul.sh \
             --src ./predict/local/configuration.yaml \
-            --dst pennsignals/palliativeconnect/predict/configuration.yaml
+            --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
 
         # Deploy jobs
       - id: nomad
