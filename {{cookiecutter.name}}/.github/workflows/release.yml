@@ -27,7 +27,7 @@ jobs:
   evaluation:
     if: ${{ github.event.release.prerelease }}
     needs: publish
-    runs-on: [evaluation, self-hosted, nomad, azure]
+    runs-on: {% raw %}[evaluation, self-hosted, nomad, azure]{% endraw %}
 
     steps:
       - id: checkout
@@ -67,7 +67,7 @@ jobs:
   production:
     if: ${{ !github.event.release.prerelease }}
     needs: publish
-    runs-on: [self-hosted, nomad, azure, production]
+    runs-on: {% raw %}[self-hosted, nomad, azure, production]{% endraw %}
 
     steps:
       - id: checkout
