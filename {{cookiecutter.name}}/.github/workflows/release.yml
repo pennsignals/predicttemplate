@@ -1,4 +1,4 @@
-name: release
+{% raw %}name: release
 on:
   release:
     types:
@@ -25,21 +25,21 @@ jobs:
           ./scripts/publish.sh -b true -p "${{ secrets.GITHUB_TOKEN }}" -v "${{ steps.version.outputs.version }}"
 
   evaluation:
-    if: {% raw %}${{ github.event.release.prerelease }}{% endraw %}
+    if: ${{ github.event.release.prerelease }}
     needs: publish
-    runs-on: {% raw %}[evaluation, self-hosted, nomad, azure]{% endraw %}
+    runs-on: [evaluation, self-hosted, nomad, azure]
 
     steps:
       - id: checkout
         uses: actions/checkout@v4
-
+{% endraw %}
         # Deploy configuration
       - id: consul
         run: |
           ./scripts/consul.sh \
             --src ./predict/local/configuration.yaml \
             --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
-
+{% raw %}
         # Deploy jobs
       - id: nomad
         run: |
@@ -64,22 +64,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  production:
-    if: {% raw %}${{ !github.event.release.prerelease }}{% endraw %}
+  live:
+    if: ${{ !github.event.release.prerelease }}
     needs: publish
-    runs-on: {% raw %}[self-hosted, nomad, azure, production]{% endraw %}
-
+    runs-on: [self-hosted, nomad, azure, production]
     steps:
       - id: checkout
         uses: actions/checkout@v4
-
+{% endraw %}
         # Deploy configuration
       - id: consul
         run: |
           ./scripts/consul.sh \
             --src ./predict/local/configuration.yaml \
             --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
-
+{% raw %}
         # Deploy jobs
       - id: nomad
         run: |
@@ -102,4 +101,4 @@ jobs:
         with:
           files: nomad.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}
