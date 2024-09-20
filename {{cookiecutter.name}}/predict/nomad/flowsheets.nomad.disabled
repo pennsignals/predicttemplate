@@ -23,7 +23,7 @@ job "{{ cookiecutter.name }}_flowsheets" {
         dns_search_domains = ["uphs.upenn.edu", "infoblox-master.uphs.upenn.edu", "root.uphs.upenn.edu"]
 
         volumes = [
-          "/share/models/{{ cookiecutter.name }}:/model:ro"
+          "/deploy/models/{{ cookiecutter.name }}:/model:ro"
         ]
       }
 
