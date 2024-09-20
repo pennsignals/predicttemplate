@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+{% raw %}#!/usr/bin/env bash
 set -Eeo pipefail
 # TODO swap to -Eeuo pipefail above (after handling all potentially-unset variables)
 
@@ -418,4 +418,4 @@ _alt_main() {
 
 if ! _is_sourced; then
 	_alt_main "$@"
-fi
+fi{% endraw %}
