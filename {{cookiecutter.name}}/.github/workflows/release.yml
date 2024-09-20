@@ -8,7 +8,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.publish.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - id: checkout
