@@ -1,4 +1,4 @@
-{% raw %}name: release
+name: release
 on:
   release:
     types:
@@ -8,10 +8,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.publish.outputs.tag }}
+      version: ${{ steps.publish.outputs.version }}
 
     steps:
-      - name: checkout
+      - id: checkout
         uses: actions/checkout@v4
 
       - id: version
@@ -30,7 +30,7 @@ jobs:
     runs-on: [evaluation, self-hosted, nomad, azure]
 
     steps:
-      - name: checkout
+      - id: checkout
         uses: actions/checkout@v4
 
         # Deploy configuration
@@ -49,14 +49,14 @@ jobs:
             --version "${{ needs.publish.outputs.version }}"
 
       # Upload rendered nomad jobs as artifacts
-      - name: upload
+      - id: upload
         uses: actions/upload-artifact@v4
         with:
           name: nomad
           path: nomad.tar.gz
 
-      # add artifacts to release
-      - name: release
+      # Add artifacts to release
+      - id: release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: softprops/action-gh-release@v2
         with:
@@ -70,7 +70,7 @@ jobs:
     runs-on: [self-hosted, nomad, azure, production]
 
     steps:
-      - name: checkout
+      - id: checkout
         uses: actions/checkout@v4
 
         # Deploy configuration
@@ -89,17 +89,17 @@ jobs:
             --version "${{ needs.publish.outputs.version }}"
 
       # Upload rendered nomad jobs as artifacts
-      - name: upload
+      - id: upload
         uses: actions/upload-artifact@v4
         with:
           name: nomad
           path: nomad.tar.gz
 
-      # add artifacts to release
-      - name: release
+      # Add artifacts to release
+      - id: release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: softprops/action-gh-release@v2
         with:
           files: nomad.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
