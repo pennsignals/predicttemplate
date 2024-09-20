@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+{% raw %}#!/usr/bin/env bash
 set -euo pipefail
 
 function usage {
@@ -76,4 +76,4 @@ for image in $images; do
     echo "image: ${image}; tag: ${tag}"
     docker tag "${image}" "${tag}"
     docker push "${tag}"
-done
+done{% endraw %}
