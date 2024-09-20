@@ -23,7 +23,7 @@ job "{{ cookiecutter.name }}_backfill" {
 
     task "predict" {
       config = {
-        image = "[[ .services.predict.image.registry ]]/[[ .services.predict.image.name ]]:[[ or (.TAG) .services.predict.image.version ]]"
+        image = "{{ cookiecutter.registry }}/{{ cookiecutter.organization }}/{{ cookiecutter.name }}/{{ cookiecutter.name }}.predict:[[ (.version) ]]"
         dns_servers = ["127.0.0.1", "170.212.249.133", "170.212.24.5"]
         dns_search_domains = ["uphs.upenn.edu", "infoblox-master.uphs.upenn.edu", "root.uphs.upenn.edu"]
 

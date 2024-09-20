@@ -18,7 +18,7 @@ job "{{ cookiecutter.name }}_flowsheets" {
     task "flowsheets" {
       config = {
         command = "publish-flowsheets"
-        image = "{{ cookiecutter.registry}}/{{ cookiecutter.name }}:[[ or (.TAG) .services.predict.image.version ]]"
+        image = "{{ cookiecutter.registry}}/{{ cookiecutter.name }}:[[ (.version) ]]"
         dns_servers = ["127.0.0.1", "170.212.249.133", "170.212.24.5"]
         dns_search_domains = ["uphs.upenn.edu", "infoblox-master.uphs.upenn.edu", "root.uphs.upenn.edu"]
 

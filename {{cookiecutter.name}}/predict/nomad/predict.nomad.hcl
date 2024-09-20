@@ -23,7 +23,7 @@ job "{{ cookiecutter.name }}_predict" {
 
     task "predict" {
       config = {
-        image = "{{ cookiecutter.registry }}/[[ .services.predict.image.name ]]:[[ or (.TAG) .services.predict.image.version ]]"
+        image = "{{ cookiecutter.registry }}/{{ cookiecutter.name }}.predict:[[ (.version) ]]"
 
         volumes = [
           "/share/models/{{ cookiecutter.name }}:/model:ro"
