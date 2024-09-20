@@ -34,7 +34,7 @@ dependencies:
   - pandas
   - pip>=22.2.2
   - pip:
-      - dsdk>=1.7.2
+      - dsdk==2.2.2
       - jupyterlab_skip_traceback
       - sh
       - vega

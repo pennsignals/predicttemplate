@@ -67,7 +67,7 @@ jobs:
   live:
     if: ${{ !github.event.release.prerelease }}
     needs: publish
-    runs-on: [self-hosted, nomad, azure, production]
+    runs-on: [live, self-hosted, nomad, azure]
     steps:
       - id: checkout
         uses: actions/checkout@v4

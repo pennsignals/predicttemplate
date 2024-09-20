@@ -26,7 +26,7 @@ job "{{ cookiecutter.name }}_predict" {
         image = "{{ cookiecutter.registry }}/{{ cookiecutter.name }}.predict:[[ (.version) ]]"
 
         volumes = [
-          "/share/models/{{ cookiecutter.name }}:/model:ro"
+          "/deploy/models/{{ cookiecutter.name }}:/model:ro"
         ]
       }
 
