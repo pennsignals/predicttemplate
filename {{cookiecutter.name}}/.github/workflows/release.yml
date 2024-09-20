@@ -25,7 +25,7 @@ jobs:
           ./scripts/publish.sh -b true -p "${{ secrets.GITHUB_TOKEN }}" -v "${{ steps.version.outputs.version }}"
 
   evaluation:
-    if: ${{ github.event.release.prerelease }}
+    if: {% raw %}${{ github.event.release.prerelease }}{% endraw %}
     needs: publish
     runs-on: {% raw %}[evaluation, self-hosted, nomad, azure]{% endraw %}
 
@@ -65,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   production:
-    if: ${{ !github.event.release.prerelease }}
+    if: {% raw %}${{ !github.event.release.prerelease }}{% endraw %}
     needs: publish
     runs-on: {% raw %}[self-hosted, nomad, azure, production]{% endraw %}
 
