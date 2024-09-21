@@ -4,7 +4,7 @@ channels:
   # pyproject.toml is authoritative for the python module
   # pin any key dependencies to match pyproject.toml
 dependencies:
-  - python=3.9
+  - python==3.12
   - altair
   - altair_viewer
   - black[jupyterlab]
