@@ -5,57 +5,63 @@ on:
       - published
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      deploy: ${{ steps.info.outputs.deploy }}
+      version: ${{ steps.info.outputs.version }}
 
     steps:
       - id: checkout
         uses: actions/checkout@v4
 
-      - id: version
+      - id: info
         run: |
-          version=$(./scripts/version.sh)
-          echo "version = ${version}"
-          echo "version=${version}" >> $GITHUB_OUTPUT
+          ./scripts/info.sh >> $GITHUB_OUTPUT
 
       - id: publish
         run: |
-          ./scripts/publish.sh -b true -p "${{ secrets.GITHUB_TOKEN }}" -v "${{ steps.version.outputs.version }}"
+          ./scripts/publish.sh \
+            --build true \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --version "${{ steps.info.outputs.version }}"
 
-  evaluation:
-    if: ${{ github.event.release.prerelease }}
-    needs: publish
-    runs-on: [evaluation, self-hosted, nomad, azure]
+  prepare:
+    needs: build
+    # matrix.deploy shows up in the GUI
+    strategy:
+      matrix:
+        deploy: [ '${{ needs.build.outputs.deploy }}' ]
+    runs-on: ubuntu-latest
+    # if prepare must happen on the runner
+    # runs-on: [self-hosted, nomad, '${{ needs.build.outputs.deploy }}' ]
+    steps:
+      - id: prepare
+        run: |
+          echo 'deploy: ${{ needs.build.outputs.deploy }}; version: ${{ needs.build.outputs.version }}'
 
+  deploy:
+    needs: [build, prepare]
+    runs-on: [self-hosted, nomad, '${{ needs.build.outputs.deploy }}' ]
     steps:
       - id: checkout
         uses: actions/checkout@v4
+
 {% endraw %}
-        # Deploy configuration
       - id: consul
         run: |
           ./scripts/consul.sh \
             --src ./predict/local/configuration.yaml \
             --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
 {% raw %}
-        # Deploy jobs
+
       - id: nomad
         run: |
           ./scripts/nomad.sh \
             --src ./predict/nomad \
             --dst ./nomad \
-            --version "${{ needs.publish.outputs.version }}"
+            --version "${{ needs.build.outputs.version }}"
 
-      # Upload rendered nomad jobs as artifacts
-      - id: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: nomad
-          path: nomad.tar.gz
-
-      # Add artifacts to release
       - id: release
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: softprops/action-gh-release@v2
@@ -64,41 +70,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  live:
-    if: ${{ !github.event.release.prerelease }}
-    needs: publish
-    runs-on: [live, self-hosted, nomad, azure]
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs: [deploy]
     steps:
-      - id: checkout
-        uses: actions/checkout@v4
+      - id: results
+        if: ${{ needs.deploy.result != 'success' }}
+        run: exit 1
 {% endraw %}
-        # Deploy configuration
-      - id: consul
-        run: |
-          ./scripts/consul.sh \
-            --src ./predict/local/configuration.yaml \
-            --dst pennsignals/{{ cookiecutter.name }}/predict/configuration.yaml
-{% raw %}
-        # Deploy jobs
-      - id: nomad
-        run: |
-          ./scripts/nomad.sh \
-            --src ./predict/nomad
-            --dst ./nomad \
-            --version "${{ needs.publish.outputs.version }}"
-
-      # Upload rendered nomad jobs as artifacts
-      - id: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: nomad
-          path: nomad.tar.gz
-
-      # Add artifacts to release
-      - id: release
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: softprops/action-gh-release@v2
-        with:
-          files: nomad.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}{% endraw %}

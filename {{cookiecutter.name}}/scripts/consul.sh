@@ -1,35 +1,39 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 function usage {
-    echo ""
-    echo "Consul configuration put."
-    echo ""
-    echo "usage: --src ./predict/local/configuration.yaml --dst organization/application/predict/configuration.yaml"
-    echo ""
-    echo " --src -s string      path to configuration file"
-    echo " --dst -d string      path to consul kv"
-    echo " --help -t            Print usage and exit"
-    echo ""
+    cat << EOF
+Usage: $0 [options]
+
+Options:
+    -s, --src string            Path to configuration file
+                                (example: ./predict/local/configuration.yaml)
+    -d, --dst string            Path to consul key value
+                                (example: organization/application/predict/configuration.yaml
+    -h, --help                  Print this help and exit
+EOF
 }
 
-while [ $# -gt 0 ]; do
+while (( "$#" )); do
     case "$1" in
+        -d|--dst)
+            dst="$2"
+            shift 2
+            ;;
+        -s|--src)
+            src="$2"
+            shift 2
+            ;;
         -h|--help)
             usage
             exit 0
-        ;;
-        -d|--dst)
-            dst="$2"
-        ;;
-        -s|--src)
-            src="$2"
-        ;;
+            ;;
         *)
-            invalid_parameter $1
+            echo "Error: Invalid argument $1" >&2
+            usage
+            exit 1
+            ;;
     esac
-    shift
-    shift
 done
 
 consul kv put ${dst} @${src}
