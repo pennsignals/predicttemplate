@@ -32,7 +32,7 @@ dependencies:
   - numexpr
   - nodejs
   - pandas
-  - pip>=22.2.2
+  - pip>=24.2
   - pip:
       - dsdk==2.2.2
       - jupyterlab_skip_traceback
@@ -49,5 +49,5 @@ dependencies:
   - scikit-learn
   - seaborn
   - pytables
-  - tornado==6.1 # jupyterlab errors
+  - tornado
   - wheel
