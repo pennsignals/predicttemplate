@@ -77,5 +77,4 @@ jobs:
     steps:
       - id: results
         if: ${{ needs.deploy.result != 'success' }}
-        run: exit 1
-{% endraw %}
+        run: exit 1{% endraw %}
